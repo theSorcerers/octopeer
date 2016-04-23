@@ -23,11 +23,11 @@ Afterwards, let Vagrant set up a fully running development box and SSH into it.
    host$ vagrant up
    host$ vagrant ssh
    ```
-1. Go to the project directory, and initialize and activate [virtualenv](https://virtualenv.pypa.io/en/latest/).
+1. Go to the project directory (The directory Code), and initialize and activate [virtualenv](https://virtualenv.pypa.io/en/latest/).
 Then, install all dependencies with [pip](https://pip.pypa.io/en/stable/).
 
    ```bash
-   vagrant$ cd octopeer
+   vagrant$ cd Code/octopeer
    vagrant$ virtualenv -p python3 env
    vagrant$ source env/bin/activate
    vagrant$ pip install -r ../requirements.txt
