@@ -1,7 +1,6 @@
 # Octopeer
 
 ## Getting Started
-0. Change '/home/aaronang/Code' to the directory of your repository on your host machine.
 
 1. The fastest way to set up the development environment is to install:
 
@@ -15,6 +14,12 @@ Afterwards, let Vagrant set up a fully running development box and SSH into it.
    ```bash
    host$ git clone git@github.com:theSorcerers/octopeer.git
    host$ cd octopeer
+    ```
+    In the Vagrantfile change: 
+    config.vm.synced_folder "/home/aaronang/Code", "/home/vagrant/Code"
+    to
+    config.vm.synced_folder "The absolute path to your just cloned repository", "/home/vagrant/Code"
+    ```bash
    host$ vagrant up
    host$ vagrant ssh
    ```
