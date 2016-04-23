@@ -36,7 +36,7 @@ Then, install all dependencies with [pip](https://pip.pypa.io/en/stable/).
 1. You are ready to start hacking, fire up the server!
 
    ```bash
-   vagrant$ python manage.py runserver 0.0.0.0:8000
+   vagrant$ python ../manage.py runserver 0.0.0.0:8000
    ```
 
    You can access the application from the host machine at `localhost:8000`.
