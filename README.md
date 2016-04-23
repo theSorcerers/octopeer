@@ -30,7 +30,7 @@ Then, install all dependencies with [pip](https://pip.pypa.io/en/stable/).
    vagrant$ cd octopeer
    vagrant$ virtualenv -p python3 env
    vagrant$ source env/bin/activate
-   vagrant$ pip install -r requirements.txt
+   vagrant$ pip install -r ../requirements.txt
    ```
 
 1. You are ready to start hacking, fire up the server!
