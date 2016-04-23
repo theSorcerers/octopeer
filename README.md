@@ -1,6 +1,7 @@
 # Octopeer
 
 ## Getting Started
+0. Change '/home/aaronang/Code' to the directory of your repository on your host machine.
 
 1. The fastest way to set up the development environment is to install:
 
