@@ -16,9 +16,9 @@ Afterwards, let Vagrant set up a fully running development box and SSH into it.
    host$ cd octopeer
     ```
     In the Vagrantfile change: 
-    config.vm.synced_folder "/home/aaronang/Code", "/home/vagrant/Code"
+    config.vm.synced_folder `/home/aaronang/Code`, `/home/vagrant/Code`
     to
-    config.vm.synced_folder "The absolute path to your just cloned repository", "/home/vagrant/Code"
+    config.vm.synced_folder `/absolute/path/to/repository`, `/home/vagrant/Code`
     ```bash
    host$ vagrant up
    host$ vagrant ssh
