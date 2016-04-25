@@ -30,14 +30,14 @@
    host$ vagrant ssh
    ```
 
-1. Go to the project directory `/home/vagrant/octopeer`, and initialize and activate [virtualenv](https://virtualenv.pypa.io/en/latest/).
+1. Initialize and activate [virtualenv](https://virtualenv.pypa.io/en/latest/), and go to the project directory `/home/vagrant/octopeer`.
    Then, install all dependencies with [pip](https://pip.pypa.io/en/stable/).
 
    ```bash
-   vagrant$ cd octopeer
    vagrant$ virtualenv -p python3 env
    # Make sure that the virtualenv is activated everytime you work on Octopeer.
    vagrant$ source env/bin/activate
+   vagrant$ cd octopeer
    (env) vagrant$ pip install -r requirements.txt
    ```
 
