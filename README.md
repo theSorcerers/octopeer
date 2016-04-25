@@ -10,13 +10,14 @@
 1. Clone the Octopeer repository to the preferred location and change directory.
    Afterward, let Vagrant set up a fully running development box and SSH into it.
    Do this on the host machine, this setup will create a virtual machine itself.
-   When you are using Windows, try installing Git and running the following commands from Git Bash as `vagrant ssh` may not work in Windows CMD.
+   When you are using Windows, try installing Git and run the following commands from Git Bash as `vagrant ssh` may not work in Windows CMD.
 
    ```bash
    host$ git clone git@github.com:theSorcerers/octopeer.git
    host$ cd octopeer
    ```
-   In the Vagrantfile change:
+
+   In the `Vagrantfile` change:
 
    `config.vm.synced_folder "/home/aaronang/Code/octopeer", "/home/vagrant/octopeer"`
 
@@ -29,7 +30,7 @@
    host$ vagrant ssh
    ```
 
-1. Go to the project directory (the directory Code), and initialize and activate [virtualenv](https://virtualenv.pypa.io/en/latest/).
+1. Go to the project directory `/home/vagrant/octopeer`, and initialize and activate [virtualenv](https://virtualenv.pypa.io/en/latest/).
    Then, install all dependencies with [pip](https://pip.pypa.io/en/stable/).
 
    ```bash
@@ -40,7 +41,7 @@
    (env) vagrant$ pip install -r requirements.txt
    ```
 
-1. You are ready to start hacking, fire up the server!
+1. Perform a migration and you are ready to go, fire up the server!
 
    ```bash
    (env) vagrant$ python manage.py migrate
