@@ -16,23 +16,30 @@ When you're using windows, try installing git and running the following commands
    ```bash
    host$ git clone git@github.com:theSorcerers/octopeer.git
    host$ cd octopeer
+    ```
+    In the Vagrantfile change: 
+    config.vm.synced_folder `/home/aaronang/Code`, `/home/vagrant/Code`
+    to
+    config.vm.synced_folder `/absolute/path/to/repository`, `/home/vagrant/Code`
+    ```bash
    host$ vagrant up
    host$ vagrant ssh
    ```
-1. Go to the project directory, and initialize and activate [virtualenv](https://virtualenv.pypa.io/en/latest/).
+1. Go to the project directory (the directory Code), and initialize and activate [virtualenv](https://virtualenv.pypa.io/en/latest/).
 Then, install all dependencies with [pip](https://pip.pypa.io/en/stable/).
 
    ```bash
-   vagrant$ cd octopeer
+   vagrant$ cd Code/octopeer
    vagrant$ virtualenv -p python3 env
    vagrant$ source env/bin/activate
-   vagrant$ pip install -r requirements.txt
+   vagrant$ pip install -r ../requirements.txt
    ```
 
 1. You are ready to start hacking, fire up the server!
 
    ```bash
-   vagrant$ python manage.py runserver 0.0.0.0:8000
+   vagrant$ python ../manage.py migrate
+   vagrant$ python ../manage.py runserver 0.0.0.0:8000
    ```
 
    You can access the application from the host machine at `localhost:8000`.
