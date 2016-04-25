@@ -36,6 +36,7 @@ Then, install all dependencies with [pip](https://pip.pypa.io/en/stable/).
 1. You are ready to start hacking, fire up the server!
 
    ```bash
+   vagrant$ python ../manage.py migrate
    vagrant$ python ../manage.py runserver 0.0.0.0:8000
    ```
 
