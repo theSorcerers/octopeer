@@ -10,6 +10,8 @@
 1. Clone the Octopeer repository to the preferred location and change directory.
 Afterwards, let Vagrant set up a fully running development box and SSH into it.
 (Do this on the host machine, this setup will create a virtual machine itself.)
+When you're using windows, try installing git and running the following commands from Git Bash as 
+`host$ vagrant ssh` may not work in cmd.
 
    ```bash
    host$ git clone git@github.com:theSorcerers/octopeer.git
