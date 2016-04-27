@@ -1,9 +1,14 @@
 from rest_framework import serializers
-from core.models import User, Session, Event, KeystrokeEvent, TextSelectionEvent, MouseHoverEvent, MouseMovementEvent, MouseClickEvent, MouseScrollEvent
+from core.models import User, PullRequest, Session, Event, EventPosition, EventType
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = User
+        fields = '__all__'
+
+class PullRequestSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = PullRequest
         fields = '__all__'
 
 class SessionSerializer(serializers.HyperlinkedModelSerializer):
@@ -11,32 +16,17 @@ class SessionSerializer(serializers.HyperlinkedModelSerializer):
         model = Session
         fields = '__all__'
 
-class KeystrokeEventSerializer(serializers.HyperlinkedModelSerializer):
+class EventSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
-        model = KeystrokeEvent
+        model = Event
         fields = '__all__'
 
-class TextSelectionEventSerializer(serializers.HyperlinkedModelSerializer):
+class EventPositionSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
-        model = TextSelectionEvent
+        model = EventPosition
         fields = '__all__'
 
-class MouseHoverEventSerializer(serializers.HyperlinkedModelSerializer):
+class EventTypeSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
-        model = MouseHoverEvent
-        fields = '__all__'
-
-class MouseMovementEventSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = MouseMovementEvent
-        fields = '__all__'
-
-class MouseClickEventSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = MouseClickEvent
-        fields = '__all__'
-
-class MouseScrollEventSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = MouseScrollEvent
+        model = EventType
         fields = '__all__'

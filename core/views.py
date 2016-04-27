@@ -1,6 +1,6 @@
 from rest_framework import viewsets, mixins
-from core.models import User, Session, KeystrokeEvent, TextSelectionEvent, MouseHoverEvent, MouseMovementEvent, MouseClickEvent, MouseScrollEvent
-from core.serializers import UserSerializer, SessionSerializer, KeystrokeEventSerializer, TextSelectionEventSerializer, MouseHoverEventSerializer, MouseMovementEventSerializer, MouseClickEventSerializer, MouseScrollEventSerializer
+from core.models import User, PullRequest, Session, Event, EventPosition, EventType
+from core.serializers import UserSerializer, PullRequestSerializer, SessionSerializer, EventSerializer, EventPositionSerializer, EventTypeSerializer
 
 class CreateListRetrieveViewSet(mixins.CreateModelMixin, mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet):
     pass
@@ -9,30 +9,22 @@ class UserViewSet(CreateListRetrieveViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
+class PullRequestViewSet(CreateListRetrieveViewSet):
+    queryset = PullRequest.objects.all()
+    serializer_class = PullRequestSerializer
+
 class SessionViewSet(CreateListRetrieveViewSet):
     queryset = Session.objects.all()
     serializer_class = SessionSerializer
 
-class KeystrokeEventViewSet(CreateListRetrieveViewSet):
-    queryset = KeystrokeEvent.objects.all()
-    serializer_class = KeystrokeEventSerializer
+class EventViewSet(CreateListRetrieveViewSet):
+    queryset = Event.objects.all()
+    serializer_class = EventSerializer
 
-class TextSelectionEventViewSet(CreateListRetrieveViewSet):
-    queryset = TextSelectionEvent.objects.all()
-    serializer_class = TextSelectionEventSerializer
+class EventPositionViewSet(CreateListRetrieveViewSet):
+    queryset = EventPosition.objects.all()
+    serializer_class = EventPositionSerializer
 
-class MouseHoverEventViewSet(CreateListRetrieveViewSet):
-    queryset = MouseHoverEvent.objects.all()
-    serializer_class = MouseHoverEventSerializer
-
-class MouseMovementEventViewSet(CreateListRetrieveViewSet):
-    queryset = MouseMovementEvent.objects.all()
-    serializer_class = MouseMovementEventSerializer
-
-class MouseClickEventViewSet(CreateListRetrieveViewSet):
-    queryset = MouseClickEvent.objects.all()
-    serializer_class = MouseClickEventSerializer
-
-class MouseScrollEventViewSet(CreateListRetrieveViewSet):
-    queryset = MouseScrollEvent.objects.all()
-    serializer_class = MouseScrollEventSerializer
+class EventTypeViewSet(CreateListRetrieveViewSet):
+    queryset = EventType.objects.all()
+    serializer_class = EventTypeSerializer
