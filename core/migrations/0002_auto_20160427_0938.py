@@ -133,4 +133,9 @@ class Migration(migrations.Migration):
             name='started_at',
             field=models.DateTimeField(null=True),
         ),
+        migrations.AddField(
+            model_name='event',
+            name='duration',
+            field=models.PositiveIntegerField(default=0),
+        ),
     ]
