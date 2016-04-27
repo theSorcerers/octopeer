@@ -82,11 +82,6 @@ class Migration(migrations.Migration):
             name='name',
         ),
         migrations.AddField(
-            model_name='event',
-            name='duration',
-            field=models.PositiveIntegerField(default=0),
-        ),
-        migrations.AddField(
             model_name='session',
             name='platform',
             field=models.CharField(default='GitHub', max_length=255),
