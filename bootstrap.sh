@@ -38,7 +38,7 @@ sudo service gunicorn start
 sudo tee -a /etc/nginx/sites-available/octopeer << EOF
 server {
     listen 80;
-    server_name 192.168.22.6;
+    server_name 10.0.22.6;
 
     location = /favicon.ico { access_log off; log_not_found off; }
     location /static/ {
