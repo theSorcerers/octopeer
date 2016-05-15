@@ -40,7 +40,6 @@ INSTALLED_APPS = [
     'rest_framework',
     'core.apps.CoreConfig',
     'rest_framework_docs',
-    'autofixture',
     'corsheaders',
 ]
 
@@ -87,7 +86,7 @@ DATABASES = {
         'NAME': 'octopeer',
         'USER': 'vagrant',
         'PASSWORD': 'password',
-        'HOST': '',
+        'HOST': 'localhost',
         'PORT': '',
     }
 }
@@ -141,3 +140,5 @@ REST_FRAMEWORK = {
 
 # Django CORS headers
 CORS_ORIGIN_ALLOW_ALL = True
+
+STATIC_ROOT = os.path.join(BASE_DIR, "static/")
