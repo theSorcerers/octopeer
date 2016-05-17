@@ -1,25 +1,49 @@
 from rest_framework import serializers
 from core.models import User, Repository, PullRequest, Session, EventType, ElementType, SemanticEvent, EventPosition, KeystrokeEvent, MousePositionEvent, MouseClickEvent, MouseScrollEvent, WindowResolutionEvent
+from rest_framework.reverse import reverse
+
+class MultiKeyHyperlinkedIdentityField(serializers.HyperlinkedIdentityField):
+    identity_args = {}
+    def get_url(self, obj, view_name, request, format):
+        if obj.pk is None:
+            return None
+        kwargs = dict((url_kw, getattr(obj, prop)) for url_kw, prop in self.identity_args.items())
+        return self.reverse(view_name, kwargs=kwargs, request=request, format=format)
+
+class RepositoryHyperlinkedIdentityField(MultiKeyHyperlinkedIdentityField):
+    identity_args = {
+        'owner': 'owner',
+        'name': 'name'
+    }
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = User
-        fields = '__all__'
+        fields = ('url', 'username')
+        extra_kwargs = {
+            'url': {'lookup_field': 'username'}
+        }
 
 class RepositorySerializer(serializers.HyperlinkedModelSerializer):
+    url = RepositoryHyperlinkedIdentityField(view_name='repository-detail')
     class Meta:
         model = Repository
-        fields = '__all__'
+        fields = ('url', 'owner', 'name', 'platform')
 
 class PullRequestSerializer(serializers.HyperlinkedModelSerializer):
+    # repository = serializers.HyperlinkedRelatedField(
+    #     view_name='repository-detail',
+    #     read_only=True
+    # )
+
     class Meta:
         model = PullRequest
-        fields = '__all__'
+        fields = ('url', 'repository', 'pull_request_number')
 
 class SessionSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Session
-        fields = '__all__'
+        fields = ('pull_request', 'user')
 
 class EventTypeSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
