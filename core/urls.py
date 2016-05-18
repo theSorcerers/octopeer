@@ -13,6 +13,6 @@ urlpatterns = [
     url(r'^users/$', views.UserList.as_view(), name='user-list'),
     url(r'^users/(?P<username>.+)/$', views.UserDetail.as_view(), name='user-detail'),
     url(r'^pullrequests/$', views.PullRequestList.as_view(), name='pullrequest-list'),
-    url(r'^pullrequests/(?P<pk>[0-9]+)/$', views.PullRequestDetail.as_view(), name='pullrequest-detail'),
+    url(r'^pullrequests/(?P<owner>.+)/(?P<name>.+)/(?P<pull_request_number>[0-9]+)/$', views.PullRequestDetail.as_view(), name='pullrequest-detail'),
     # url(r'^', include(router.urls)),
 ]

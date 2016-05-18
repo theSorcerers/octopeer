@@ -46,7 +46,7 @@ class RepositorySerializer(serializers.HyperlinkedModelSerializer):
         fields = ('url', 'owner', 'name', 'platform')
 
 class PullRequestSerializer(serializers.HyperlinkedModelSerializer):
-    # url = PullRequestHyperlinkedIdentityField(view_name='pullrequest-detail')
+    url = PullRequestHyperlinkedIdentityField(view_name='pullrequest-detail')
     repository = RepositorySerializer()
 
     class Meta:
