@@ -4,8 +4,8 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
 from core.models import User, Repository, PullRequest, Session, EventType, ElementType, SemanticEvent, EventPosition, KeystrokeEvent, MousePositionEvent, MouseClickEvent, MouseScrollEvent, WindowResolutionEvent
-from core.serializers import UserSerializer, RepositorySerializer, PullRequestSerializer
-# , SessionSerializer, EventTypeSerializer, ElementTypeSerializer, SemanticEventSerializer, EventPositionSerializer, KeystrokeEventSerializer, MousePositionEventSerializer, MouseClickEventSerializer, MouseScrollEventSerializer, WindowResolutionEventSerializer
+from core.serializers import UserSerializer, RepositorySerializer, PullRequestSerializer, SessionSerializer
+# , EventTypeSerializer, ElementTypeSerializer, SemanticEventSerializer, EventPositionSerializer, KeystrokeEventSerializer, MousePositionEventSerializer, MouseClickEventSerializer, MouseScrollEventSerializer, WindowResolutionEventSerializer
 
 @api_view(['GET'])
 def api_root(request, format=None):
@@ -13,6 +13,7 @@ def api_root(request, format=None):
         'users': reverse('user-list', request=request, format=format),
         'repositories': reverse('repository-list', request=request, format=format),
         'pullrequests': reverse('pullrequest-list', request=request, format=format),
+        'sessions': reverse('session-list', request=request, format=format),
     })
 
 class MultipleFieldLookupMixin(object):
@@ -24,12 +25,17 @@ class MultipleFieldLookupMixin(object):
         queryset = self.get_queryset()             # Get the base queryset
         queryset = self.filter_queryset(queryset)  # Apply any filter backends
         filter = {}
-        print(self.kwargs['pull_request_number'])
         for field in self.lookup_fields:
             filter[field] = self.kwargs[field]
         return get_object_or_404(queryset, **filter)  # Lookup the object
 
-class PullRequestLookupMixin(object):
+# class CreateListRetrieveViewSet(mixins.CreateModelMixin, mixins.ListModelMixin, mixins.RetrieveModelMixin, MultipleFieldLookupMixin, viewsets.GenericViewSet):
+#     pass
+
+class MultipleFieldRetrieveAPIView(MultipleFieldLookupMixin, generics.RetrieveAPIView):
+    pass
+
+class PullRequestRetrieveAPIView(generics.RetrieveAPIView):
     def get_object(self):
         queryset = self.get_queryset()             # Get the base queryset
         queryset = self.filter_queryset(queryset)  # Apply any filter backends
@@ -42,14 +48,22 @@ class PullRequestLookupMixin(object):
         }
         return get_object_or_404(queryset, **filter)  # Lookup the object
 
-# class CreateListRetrieveViewSet(mixins.CreateModelMixin, mixins.ListModelMixin, mixins.RetrieveModelMixin, MultipleFieldLookupMixin, viewsets.GenericViewSet):
-#     pass
-
-class MultipleFieldRetrieveAPIView(MultipleFieldLookupMixin, generics.RetrieveAPIView):
-    pass
-
-class PullRequestRetrieveAPIView(PullRequestLookupMixin, generics.RetrieveAPIView):
-    pass
+class SessionRetrieveAPIView(generics.RetrieveAPIView):
+    def get_object(self):
+        queryset = self.get_queryset()             # Get the base queryset
+        queryset = self.filter_queryset(queryset)  # Apply any filter backends
+        username = self.kwargs['username']
+        owner = self.kwargs['owner']
+        name = self.kwargs['name']
+        pull_request_number = self.kwargs['pull_request_number']
+        user = User.objects.get(username=username)
+        repository = Repository.objects.get(owner=owner, name=name)
+        pull_request = PullRequest.objects.get(repository=repository, pull_request_number=pull_request_number)
+        filter = {
+            'pull_request': pull_request,
+            'user': user
+        }
+        return get_object_or_404(queryset, **filter)  # Lookup the object
 
 class UserList(generics.ListCreateAPIView):
     queryset = User.objects.all()
@@ -76,6 +90,14 @@ class PullRequestList(generics.ListCreateAPIView):
 class PullRequestDetail(PullRequestRetrieveAPIView):
     queryset = PullRequest.objects.all()
     serializer_class = PullRequestSerializer
+
+class SessionList(generics.ListCreateAPIView):
+    queryset = Session.objects.all()
+    serializer_class = SessionSerializer
+
+class SessionDetail(SessionRetrieveAPIView):
+    queryset = Session.objects.all()
+    serializer_class = SessionSerializer
 
 # class SessionViewSet(CreateListRetrieveViewSet):
 #     queryset = Session.objects.all()

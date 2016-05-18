@@ -15,8 +15,6 @@ class PullRequestHyperlinkedIdentityField(serializers.HyperlinkedIdentityField):
         if obj.pk is None:
             return None
         repository = getattr(obj, 'repository')
-        # if repository.pk is None:
-        #     return None
         kwargs = {
             'owner': getattr(repository, 'owner'),
             'name': getattr(repository, 'name'),
@@ -24,10 +22,25 @@ class PullRequestHyperlinkedIdentityField(serializers.HyperlinkedIdentityField):
         }
         return self.reverse(view_name, kwargs=kwargs, request=request, format=format)
 
+class SessionHyperlinkedIdentityField(serializers.HyperlinkedIdentityField):
+    def get_url(self, obj, view_name, request, format):
+        if obj.pk is None:
+            return None
+        pull_request = getattr(obj, 'pull_request')
+        repository = getattr(pull_request, 'repository')
+        user = getattr(obj, 'user')
+        kwargs = {
+            'username': getattr(user, 'username'),
+            'owner': getattr(repository, 'owner'),
+            'name': getattr(repository, 'name'),
+            'pull_request_number': getattr(pull_request, 'pull_request_number')
+        }
+        return self.reverse(view_name, kwargs=kwargs, request=request, format=format)
+
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = User
-        fields = ('url', 'username')
+        fields = ('url', 'id', 'username')
         extra_kwargs = {
             'url': {'lookup_field': 'username'}
         }
@@ -55,15 +68,31 @@ class PullRequestSerializer(serializers.HyperlinkedModelSerializer):
 
     def create(self, validated_data):
         repository = validated_data.pop('repository')
-        repository = Repository.objects.create(**repository)
-        pullrequest = PullRequest.objects.create(repository=repository, **validated_data)
+        (repository, created) = Repository.objects.get_or_create(**repository)
+        pullrequest = PullRequest.objects.get_or_create(repository=repository, **validated_data)
         return pullrequest
 
-# class SessionSerializer(serializers.HyperlinkedModelSerializer):
-#     class Meta:
-#         model = Session
-#         fields = ('pull_request', 'user')
-#
+class SessionSerializer(serializers.HyperlinkedModelSerializer):
+    url = SessionHyperlinkedIdentityField(view_name='session-detail')
+    pull_request = PullRequestSerializer()
+    user = UserSerializer()
+
+    class Meta:
+        model = Session
+        fields = ('url', 'pull_request', 'user')
+
+    def create(self, validated_data):
+        pull_request = validated_data.pop('pull_request')
+        repository = pull_request.pop('repository')
+        (repository, _) = Repository.objects.get_or_create(**repository)
+        print(pull_request)
+        (pull_request, _) = PullRequest.objects.get_or_create(repository=repository, **pull_request)
+        user = validated_data.pop('user')
+        (user, _) = User.objects.get_or_create(**user)
+        (session, _) = Session.objects.get_or_create(pull_request=pull_request, user=user, **validated_data)
+        return session
+
+
 # class EventTypeSerializer(serializers.HyperlinkedModelSerializer):
 #     class Meta:
 #         model = EventType
