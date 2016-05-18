@@ -3,6 +3,9 @@ from core import views
 from rest_framework.routers import DefaultRouter
 from rest_framework.urlpatterns import format_suffix_patterns
 
+# router = DefaultRouter()
+# router.register(r'pullrequests', views.PullRequestViewSet)
+
 urlpatterns = [
     url(r'^$', views.api_root),
     url(r'^repositories/$', views.RepositoryList.as_view(), name='repository-list'),
@@ -11,4 +14,5 @@ urlpatterns = [
     url(r'^users/(?P<username>.+)/$', views.UserDetail.as_view(), name='user-detail'),
     url(r'^pullrequests/$', views.PullRequestList.as_view(), name='pullrequest-list'),
     url(r'^pullrequests/(?P<pk>[0-9]+)/$', views.PullRequestDetail.as_view(), name='pullrequest-detail'),
+    # url(r'^', include(router.urls)),
 ]
