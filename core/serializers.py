@@ -24,12 +24,12 @@ class SessionSerializer(serializers.HyperlinkedModelSerializer):
 class EventTypeSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = EventType
-        fields = '__all__'
+        fields = ('url', 'id', 'name')
 
 class ElementTypeSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = ElementType
-        fields = '__all__'
+        fields = ('url', 'id', 'name')
 
 class SemanticEventSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:

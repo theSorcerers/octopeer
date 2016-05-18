@@ -29,12 +29,14 @@ class Session(models.Model):
         db_table = 'session'
 
 class EventType(models.Model):
+    id = models.PositiveIntegerField(primary_key=True)
     name = models.CharField(max_length=255)
 
     class Meta:
         db_table = 'event_type'
 
 class ElementType(models.Model):
+    id = models.PositiveIntegerField(primary_key=True)
     name = models.CharField(max_length=255)
 
     class Meta:
