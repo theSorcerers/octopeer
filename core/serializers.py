@@ -105,16 +105,13 @@ class ElementTypeSerializer(serializers.HyperlinkedModelSerializer):
         model = ElementType
         fields = ('url', 'id', 'name')
 
-class SemanticEventSerializer(serializers.HyperlinkedModelSerializer):
-    url = serializers.HyperlinkedIdentityField(view_name='semantic-event-detail')
-
-    session = SessionSerializer()
-    event_type = serializers.HyperlinkedRelatedField(view_name='event-type-detail', queryset=EventType.objects.all())
-    element_type = serializers.HyperlinkedRelatedField(view_name='element-type-detail', queryset=ElementType.objects.all())
+class EventSerializer(serializers.HyperlinkedModelSerializer):
+    @property
+    def event_model(self):
+        raise NotImplementedError
 
     class Meta:
-        model = SemanticEvent
-        fields = ('url', 'id', 'session', 'event_type', 'element_type', 'started_at', 'duration')
+        abstract = True
 
     def create(self, validated_data):
         session = validated_data.pop('session')
@@ -125,5 +122,25 @@ class SemanticEventSerializer(serializers.HyperlinkedModelSerializer):
         (pull_request, _) = PullRequest.objects.get_or_create(repository=repository, **pull_request)
         (user, _) = User.objects.get_or_create(**user)
         (session, _) = Session.objects.get_or_create(pull_request=pull_request, user=user)
-        (semantic_event, _) = SemanticEvent.objects.get_or_create(session=session, **validated_data)
-        return semantic_event
+        (event, _) = self.event_model.objects.get_or_create(session=session, **validated_data)
+        return event
+
+class SemanticEventSerializer(EventSerializer):
+    url = serializers.HyperlinkedIdentityField(view_name='semantic-event-detail')
+    session = SessionSerializer()
+    event_type = serializers.HyperlinkedRelatedField(view_name='event-type-detail', queryset=EventType.objects.all())
+    element_type = serializers.HyperlinkedRelatedField(view_name='element-type-detail', queryset=ElementType.objects.all())
+    event_model = SemanticEvent
+
+    class Meta:
+        model = SemanticEvent
+        fields = ('url', 'id', 'session', 'event_type', 'element_type', 'started_at', 'duration')
+
+class KeystrokeEventSerializer(EventSerializer):
+    url = serializers.HyperlinkedIdentityField(view_name='keystroke-event-detail')
+    session = SessionSerializer()
+    event_model = KeystrokeEvent
+
+    class Meta:
+        model = KeystrokeEvent
+        fields = ('url', 'id', 'session', 'keystroke', 'created_at')

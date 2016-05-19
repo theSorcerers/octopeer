@@ -4,8 +4,8 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
 from core.models import User, Repository, PullRequest, Session, EventType, ElementType, SemanticEvent, EventPosition, KeystrokeEvent, MousePositionEvent, MouseClickEvent, MouseScrollEvent, WindowResolutionEvent
-from core.serializers import UserSerializer, RepositorySerializer, PullRequestSerializer, SessionSerializer, EventTypeSerializer, ElementTypeSerializer, SemanticEventSerializer
-# , , KeystrokeEventSerializer, MousePositionEventSerializer, MouseClickEventSerializer, MouseScrollEventSerializer, WindowResolutionEventSerializer
+from core.serializers import UserSerializer, RepositorySerializer, PullRequestSerializer, SessionSerializer, EventTypeSerializer, ElementTypeSerializer, SemanticEventSerializer, KeystrokeEventSerializer
+# , , MousePositionEventSerializer, MouseClickEventSerializer, MouseScrollEventSerializer, WindowResolutionEventSerializer
 
 @api_view(['GET'])
 def api_root(request, format=None):
@@ -17,6 +17,7 @@ def api_root(request, format=None):
         'event-types': reverse('event-type-list', request=request, format=format),
         'element-types': reverse('element-type-list', request=request, format=format),
         'semantic-events': reverse('semantic-event-list', request=request, format=format),
+        'keystroke-events': reverse('keystroke-event-list', request=request, format=format),
     })
 
 class MultipleFieldLookupMixin(object):
@@ -125,3 +126,11 @@ class SemanticEventList(generics.ListCreateAPIView):
 class SemanticEventDetail(generics.RetrieveAPIView):
     queryset = SemanticEvent.objects.all()
     serializer_class = SemanticEventSerializer
+
+class KeystrokeEventList(generics.ListCreateAPIView):
+    queryset = KeystrokeEvent.objects.all()
+    serializer_class = KeystrokeEventSerializer
+
+class KeystrokeEventDetail(generics.RetrieveAPIView):
+    queryset = KeystrokeEvent.objects.all()
+    serializer_class = KeystrokeEventSerializer
