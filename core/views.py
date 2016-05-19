@@ -4,8 +4,8 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
 from core.models import User, Repository, PullRequest, Session, EventType, ElementType, SemanticEvent, EventPosition, KeystrokeEvent, MousePositionEvent, MouseClickEvent, MouseScrollEvent, WindowResolutionEvent
-from core.serializers import UserSerializer, RepositorySerializer, PullRequestSerializer, SessionSerializer
-# , EventTypeSerializer, ElementTypeSerializer, SemanticEventSerializer, EventPositionSerializer, KeystrokeEventSerializer, MousePositionEventSerializer, MouseClickEventSerializer, MouseScrollEventSerializer, WindowResolutionEventSerializer
+from core.serializers import UserSerializer, RepositorySerializer, PullRequestSerializer, SessionSerializer, EventTypeSerializer, ElementTypeSerializer
+# , SemanticEventSerializer, KeystrokeEventSerializer, MousePositionEventSerializer, MouseClickEventSerializer, MouseScrollEventSerializer, WindowResolutionEventSerializer
 
 @api_view(['GET'])
 def api_root(request, format=None):
@@ -14,6 +14,8 @@ def api_root(request, format=None):
         'repositories': reverse('repository-list', request=request, format=format),
         'pull-requests': reverse('pull-request-list', request=request, format=format),
         'sessions': reverse('session-list', request=request, format=format),
+        'event-types': reverse('event-type-list', request=request, format=format),
+        'element-types': reverse('element-type-list', request=request, format=format),
     })
 
 class MultipleFieldLookupMixin(object):
@@ -29,8 +31,8 @@ class MultipleFieldLookupMixin(object):
             filter[field] = self.kwargs[field]
         return get_object_or_404(queryset, **filter)  # Lookup the object
 
-# class CreateListRetrieveViewSet(mixins.CreateModelMixin, mixins.ListModelMixin, mixins.RetrieveModelMixin, MultipleFieldLookupMixin, viewsets.GenericViewSet):
-#     pass
+class CreateListRetrieveViewSet(mixins.CreateModelMixin, mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet):
+    pass
 
 class MultipleFieldRetrieveAPIView(MultipleFieldLookupMixin, generics.RetrieveAPIView):
     pass
@@ -99,14 +101,26 @@ class SessionDetail(SessionRetrieveAPIView):
     queryset = Session.objects.all()
     serializer_class = SessionSerializer
 
+class EventTypeList(generics.ListCreateAPIView):
+    queryset = EventType.objects.all()
+    serializer_class = EventTypeSerializer
+
+class EventTypeDetail(generics.RetrieveAPIView):
+    queryset = EventType.objects.all()
+    serializer_class = EventTypeSerializer
+
+class ElementTypeList(generics.ListCreateAPIView):
+    queryset = ElementType.objects.all()
+    serializer_class = ElementTypeSerializer
+
+class ElementTypeDetail(generics.RetrieveAPIView):
+    queryset = ElementType.objects.all()
+    serializer_class = ElementTypeSerializer
+
 # class SessionViewSet(CreateListRetrieveViewSet):
 #     queryset = Session.objects.all()
 #     serializer_class = SessionSerializer
-#
-# class EventTypeViewSet(CreateListRetrieveViewSet):
-#     queryset = EventType.objects.all()
-#     serializer_class = EventTypeSerializer
-#
+
 # class ElementTypeViewSet(CreateListRetrieveViewSet):
 #     queryset = ElementType.objects.all()
 #     serializer_class = ElementTypeSerializer

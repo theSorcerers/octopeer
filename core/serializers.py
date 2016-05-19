@@ -93,26 +93,25 @@ class SessionSerializer(serializers.HyperlinkedModelSerializer):
         return session
 
 
-# class EventTypeSerializer(serializers.HyperlinkedModelSerializer):
-#     class Meta:
-#         model = EventType
-#         fields = '__all__'
-#
-# class ElementTypeSerializer(serializers.HyperlinkedModelSerializer):
-#     class Meta:
-#         model = ElementType
-#         fields = '__all__'
-#
+class EventTypeSerializer(serializers.HyperlinkedModelSerializer):
+    url = serializers.HyperlinkedIdentityField(view_name='event-type-detail')
+
+    class Meta:
+        model = EventType
+        fields = ('url', 'id', 'name')
+
+class ElementTypeSerializer(serializers.HyperlinkedModelSerializer):
+    url = serializers.HyperlinkedIdentityField(view_name='element-type-detail')
+
+    class Meta:
+        model = ElementType
+        fields = ('url', 'id', 'name')
+
 # class SemanticEventSerializer(serializers.HyperlinkedModelSerializer):
 #     class Meta:
 #         model = SemanticEvent
 #         fields = '__all__'
-#
-# class EventPositionSerializer(serializers.HyperlinkedModelSerializer):
-#     class Meta:
-#         model = EventPosition
-#         fields = '__all__'
-#
+
 # class KeystrokeEventSerializer(serializers.HyperlinkedModelSerializer):
 #     class Meta:
 #         model = KeystrokeEvent

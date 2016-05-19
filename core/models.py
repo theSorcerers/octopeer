@@ -15,7 +15,7 @@ class Repository(models.Model):
         db_table = 'repository'
 
 class PullRequest(models.Model):
-    repository = models.ForeignKey(Repository, on_delete=models.CASCADE, null=True, related_name='pullrequests')
+    repository = models.ForeignKey(Repository, on_delete=models.CASCADE, null=True)
     pull_request_number = models.PositiveIntegerField()
 
     class Meta:
