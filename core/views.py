@@ -4,8 +4,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
 from core.models import User, Repository, PullRequest, Session, EventType, ElementType, SemanticEvent, EventPosition, KeystrokeEvent, MousePositionEvent, MouseClickEvent, MouseScrollEvent, WindowResolutionEvent
-from core.serializers import UserSerializer, RepositorySerializer, PullRequestSerializer, SessionSerializer, EventTypeSerializer, ElementTypeSerializer, SemanticEventSerializer, KeystrokeEventSerializer
-# , , MousePositionEventSerializer, MouseClickEventSerializer, MouseScrollEventSerializer, WindowResolutionEventSerializer
+from core.serializers import UserSerializer, RepositorySerializer, PullRequestSerializer, SessionSerializer, EventTypeSerializer, ElementTypeSerializer, SemanticEventSerializer, KeystrokeEventSerializer, MousePositionEventSerializer, MouseClickEventSerializer, MouseScrollEventSerializer, WindowResolutionEventSerializer
 
 @api_view(['GET'])
 def api_root(request, format=None):
@@ -18,6 +17,10 @@ def api_root(request, format=None):
         'element-types': reverse('element-type-list', request=request, format=format),
         'semantic-events': reverse('semantic-event-list', request=request, format=format),
         'keystroke-events': reverse('keystroke-event-list', request=request, format=format),
+        'mouse-position-events': reverse('mouse-position-event-list', request=request, format=format),
+        'mouse-click-events': reverse('mouse-click-event-list', request=request, format=format),
+        'mouse-scroll-events': reverse('mouse-scroll-event-list', request=request, format=format),
+        'window-resolution-events': reverse('window-resolution-event-list', request=request, format=format),
     })
 
 class MultipleFieldLookupMixin(object):
@@ -134,3 +137,35 @@ class KeystrokeEventList(generics.ListCreateAPIView):
 class KeystrokeEventDetail(generics.RetrieveAPIView):
     queryset = KeystrokeEvent.objects.all()
     serializer_class = KeystrokeEventSerializer
+
+class MousePositionEventList(generics.ListCreateAPIView):
+    queryset = MousePositionEvent.objects.all()
+    serializer_class = MousePositionEventSerializer
+
+class MousePositionEventDetail(generics.RetrieveAPIView):
+    queryset = MousePositionEvent.objects.all()
+    serializer_class = MousePositionEventSerializer
+
+class MouseClickEventList(generics.ListCreateAPIView):
+    queryset = MouseClickEvent.objects.all()
+    serializer_class = MouseClickEventSerializer
+
+class MouseClickEventDetail(generics.RetrieveAPIView):
+    queryset = MouseClickEvent.objects.all()
+    serializer_class = MouseClickEventSerializer
+
+class MouseScrollEventList(generics.ListCreateAPIView):
+    queryset = MouseScrollEvent.objects.all()
+    serializer_class = MouseScrollEventSerializer
+
+class MouseScrollEventDetail(generics.RetrieveAPIView):
+    queryset = MouseScrollEvent.objects.all()
+    serializer_class = MouseScrollEventSerializer
+
+class WindowResolutionEventList(generics.ListCreateAPIView):
+    queryset = WindowResolutionEvent.objects.all()
+    serializer_class = WindowResolutionEventSerializer
+
+class WindowResolutionEventDetail(generics.RetrieveAPIView):
+    queryset = WindowResolutionEvent.objects.all()
+    serializer_class = WindowResolutionEventSerializer

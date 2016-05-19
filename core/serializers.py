@@ -144,3 +144,39 @@ class KeystrokeEventSerializer(EventSerializer):
     class Meta:
         model = KeystrokeEvent
         fields = ('url', 'id', 'session', 'keystroke', 'created_at')
+
+class MousePositionEventSerializer(EventSerializer):
+    url = serializers.HyperlinkedIdentityField(view_name='mouse-position-event-detail')
+    session = SessionSerializer()
+    event_model = MousePositionEvent
+
+    class Meta:
+        model = MousePositionEvent
+        fields = ('url', 'id', 'session', 'position_x', 'position_y', 'viewport_x', 'viewport_y', 'created_at')
+
+class MouseClickEventSerializer(EventSerializer):
+    url = serializers.HyperlinkedIdentityField(view_name='mouse-click-event-detail')
+    session = SessionSerializer()
+    event_model = MouseClickEvent
+
+    class Meta:
+        model = MouseClickEvent
+        fields = ('url', 'id', 'session', 'created_at')
+
+class MouseScrollEventSerializer(EventSerializer):
+    url = serializers.HyperlinkedIdentityField(view_name='mouse-scroll-event-detail')
+    session = SessionSerializer()
+    event_model = MouseScrollEvent
+
+    class Meta:
+        model = MouseScrollEvent
+        fields = ('url', 'id', 'session', 'viewport_x', 'viewport_y', 'created_at')
+
+class WindowResolutionEventSerializer(EventSerializer):
+    url = serializers.HyperlinkedIdentityField(view_name='window-resolution-event-detail')
+    session = SessionSerializer()
+    event_model = WindowResolutionEvent
+
+    class Meta:
+        model = WindowResolutionEvent
+        fields = ('url', 'id', 'session', 'width', 'height', 'created_at')

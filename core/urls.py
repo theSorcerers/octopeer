@@ -21,4 +21,12 @@ urlpatterns = [
     url(r'^semantic-events/(?P<pk>[0-9]+)/$', views.SemanticEventDetail.as_view(), name='semantic-event-detail'),
     url(r'^keystroke-events/$', views.KeystrokeEventList.as_view(), name='keystroke-event-list'),
     url(r'^keystroke-events/(?P<pk>[0-9]+)/$', views.KeystrokeEventDetail.as_view(), name='keystroke-event-detail'),
+    url(r'^mouse-position-events/$', views.MousePositionEventList.as_view(), name='mouse-position-event-list'),
+    url(r'^mouse-position-events/(?P<pk>[0-9]+)/$', views.MousePositionEventDetail.as_view(), name='mouse-position-event-detail'),
+    url(r'^mouse-click-events/$', views.MouseClickEventList.as_view(), name='mouse-click-event-list'),
+    url(r'^mouse-click-events/(?P<pk>[0-9]+)/$', views.MouseClickEventDetail.as_view(), name='mouse-click-event-detail'),
+    url(r'^mouse-scroll-events/$', views.MouseScrollEventList.as_view(), name='mouse-scroll-event-list'),
+    url(r'^mouse-scroll-events/(?P<pk>[0-9]+)/$', views.MouseScrollEventDetail.as_view(), name='mouse-scroll-event-detail'),
+    url(r'^window-resolution-events/$', views.WindowResolutionEventList.as_view(), name='window-resolution-event-list'),
+    url(r'^window-resolution-events/(?P<pk>[0-9]+)/$', views.WindowResolutionEventDetail.as_view(), name='window-resolution-event-detail'),
 ]
