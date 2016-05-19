@@ -85,13 +85,11 @@ class SessionSerializer(serializers.HyperlinkedModelSerializer):
         pull_request = validated_data.pop('pull_request')
         repository = pull_request.pop('repository')
         (repository, _) = Repository.objects.get_or_create(**repository)
-        print(pull_request)
         (pull_request, _) = PullRequest.objects.get_or_create(repository=repository, **pull_request)
         user = validated_data.pop('user')
         (user, _) = User.objects.get_or_create(**user)
         (session, _) = Session.objects.get_or_create(pull_request=pull_request, user=user, **validated_data)
         return session
-
 
 class EventTypeSerializer(serializers.HyperlinkedModelSerializer):
     url = serializers.HyperlinkedIdentityField(view_name='event-type-detail')
@@ -107,32 +105,25 @@ class ElementTypeSerializer(serializers.HyperlinkedModelSerializer):
         model = ElementType
         fields = ('url', 'id', 'name')
 
-# class SemanticEventSerializer(serializers.HyperlinkedModelSerializer):
-#     class Meta:
-#         model = SemanticEvent
-#         fields = '__all__'
+class SemanticEventSerializer(serializers.HyperlinkedModelSerializer):
+    url = serializers.HyperlinkedIdentityField(view_name='semantic-event-detail')
 
-# class KeystrokeEventSerializer(serializers.HyperlinkedModelSerializer):
-#     class Meta:
-#         model = KeystrokeEvent
-#         fields = '__all__'
-#
-# class MousePositionEventSerializer(serializers.HyperlinkedModelSerializer):
-#     class Meta:
-#         model = MousePositionEvent
-#         fields = '__all__'
-#
-# class MouseClickEventSerializer(serializers.HyperlinkedModelSerializer):
-#     class Meta:
-#         model = MouseClickEvent
-#         fields = '__all__'
-#
-# class MouseScrollEventSerializer(serializers.HyperlinkedModelSerializer):
-#     class Meta:
-#         model = MouseScrollEvent
-#         fields = '__all__'
-#
-# class WindowResolutionEventSerializer(serializers.HyperlinkedModelSerializer):
-#     class Meta:
-#         model = WindowResolutionEvent
-#         fields = '__all__'
+    session = SessionSerializer()
+    event_type = serializers.HyperlinkedRelatedField(view_name='event-type-detail', queryset=EventType.objects.all())
+    element_type = serializers.HyperlinkedRelatedField(view_name='element-type-detail', queryset=ElementType.objects.all())
+
+    class Meta:
+        model = SemanticEvent
+        fields = ('url', 'id', 'session', 'event_type', 'element_type', 'started_at', 'duration')
+
+    def create(self, validated_data):
+        session = validated_data.pop('session')
+        pull_request = session.pop('pull_request')
+        repository = pull_request.pop('repository')
+        user = session.pop('user')
+        (repository, _) = Repository.objects.get_or_create(**repository)
+        (pull_request, _) = PullRequest.objects.get_or_create(repository=repository, **pull_request)
+        (user, _) = User.objects.get_or_create(**user)
+        (session, _) = Session.objects.get_or_create(pull_request=pull_request, user=user)
+        (semantic_event, _) = SemanticEvent.objects.get_or_create(session=session, **validated_data)
+        return semantic_event

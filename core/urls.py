@@ -17,4 +17,6 @@ urlpatterns = [
     url(r'^event-types/(?P<pk>[0-9]+)/$', views.EventTypeDetail.as_view(), name='event-type-detail'),
     url(r'^element-types/$', views.ElementTypeList.as_view(), name='element-type-list'),
     url(r'^element-types/(?P<pk>[0-9]+)/$', views.ElementTypeDetail.as_view(), name='element-type-detail'),
+    url(r'^semantic-events/$', views.SemanticEventList.as_view(), name='semantic-event-list'),
+    url(r'^semantic-events/(?P<pk>[0-9]+)/$', views.SemanticEventDetail.as_view(), name='semantic-event-detail'),
 ]
