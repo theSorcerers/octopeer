@@ -12,7 +12,7 @@ def api_root(request, format=None):
     return Response({
         'users': reverse('user-list', request=request, format=format),
         'repositories': reverse('repository-list', request=request, format=format),
-        'pullrequests': reverse('pullrequest-list', request=request, format=format),
+        'pull-requests': reverse('pull-request-list', request=request, format=format),
         'sessions': reverse('session-list', request=request, format=format),
     })
 
