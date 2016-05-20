@@ -68,8 +68,8 @@ class PullRequestSerializer(serializers.HyperlinkedModelSerializer):
 
     def create(self, validated_data):
         repository = validated_data.pop('repository')
-        (repository, created) = Repository.objects.get_or_create(**repository)
-        pullrequest = PullRequest.objects.get_or_create(repository=repository, **validated_data)
+        (repository, _) = Repository.objects.get_or_create(**repository)
+        (pullrequest, _) = PullRequest.objects.get_or_create(repository=repository, **validated_data)
         return pullrequest
 
 class SessionSerializer(serializers.HyperlinkedModelSerializer):
