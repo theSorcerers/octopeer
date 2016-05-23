@@ -1,4 +1,5 @@
 from django.db import models
+from core.fields import UnixTimeStampField
 
 class User(models.Model):
     username = models.CharField(max_length=255)
@@ -46,7 +47,7 @@ class SemanticEvent(models.Model):
     session = models.ForeignKey(Session, on_delete=models.CASCADE)
     event_type = models.ForeignKey(EventType, on_delete=models.CASCADE)
     element_type = models.ForeignKey(ElementType, on_delete=models.CASCADE)
-    started_at = models.DateTimeField()
+    started_at = UnixTimeStampField(default=0.0)
     duration = models.PositiveIntegerField()
 
     class Meta:
@@ -61,7 +62,7 @@ class EventPosition(models.Model):
 
 class RawEvent(models.Model):
     session = models.ForeignKey(Session, on_delete=models.CASCADE)
-    created_at = models.DateTimeField()
+    created_at = UnixTimeStampField(default=0.0)
 
     class Meta:
         abstract = True
