@@ -83,10 +83,15 @@ class SessionSerializer(serializers.HyperlinkedModelSerializer):
     url = SessionHyperlinkedIdentityField(view_name='session-detail')
     pull_request = PullRequestSerializer()
     user = UserSerializer()
+    semantic_events = serializers.HyperlinkedRelatedField(
+        many=True,
+        read_only=True,
+        view_name='semantic-event-detail'
+    )
 
     class Meta:
         model = Session
-        fields = ('url', 'id', 'pull_request', 'user')
+        fields = ('url', 'id', 'pull_request', 'user', 'semantic_events')
 
     def create(self, validated_data):
         pull_request = validated_data.pop('pull_request')

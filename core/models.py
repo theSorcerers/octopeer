@@ -44,7 +44,7 @@ class ElementType(models.Model):
         db_table = 'element_type'
 
 class SemanticEvent(models.Model):
-    session = models.ForeignKey(Session, on_delete=models.CASCADE)
+    session = models.ForeignKey(Session, on_delete=models.CASCADE, related_name='semantic_events')
     event_type = models.ForeignKey(EventType, on_delete=models.CASCADE)
     element_type = models.ForeignKey(ElementType, on_delete=models.CASCADE)
     started_at = UnixTimeStampField(default=0.0)
