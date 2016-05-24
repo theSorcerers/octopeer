@@ -60,7 +60,7 @@ class SessionRetrieveAPIView(generics.RetrieveAPIView):
     def get_object(self):
         queryset = self.get_queryset()             # Get the base queryset
         queryset = self.filter_queryset(queryset)  # Apply any filter backends
-        if self.kwargs['pk']:
+        if 'pk' in self.kwargs:
             id = self.kwargs['pk']
             session = Session.objects.get(id=id)
             filter = { 'id': id }
