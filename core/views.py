@@ -3,6 +3,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
+from rest_framework.views import APIView
 from core.models import User, Repository, PullRequest, Session, EventType, ElementType, SemanticEvent, EventPosition, KeystrokeEvent, MousePositionEvent, MouseClickEvent, MouseScrollEvent, WindowResolutionEvent
 from core.serializers import UserSerializer, RepositorySerializer, PullRequestSerializer, SessionSerializer, EventTypeSerializer, ElementTypeSerializer, SemanticEventSerializer, KeystrokeEventSerializer, MousePositionEventSerializer, MouseClickEventSerializer, MouseScrollEventSerializer, WindowResolutionEventSerializer
 
@@ -59,6 +60,11 @@ class SessionRetrieveAPIView(generics.RetrieveAPIView):
     def get_object(self):
         queryset = self.get_queryset()             # Get the base queryset
         queryset = self.filter_queryset(queryset)  # Apply any filter backends
+        if self.kwargs['pk']:
+            id = self.kwargs['pk']
+            session = Session.objects.get(id=id)
+            filter = { 'id': id }
+            return get_object_or_404(queryset, **filter)
         username = self.kwargs['username']
         owner = self.kwargs['owner']
         name = self.kwargs['name']

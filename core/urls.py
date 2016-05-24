@@ -13,6 +13,7 @@ urlpatterns = [
     url(r'^pull-requests/(?P<owner>.+)/(?P<name>.+)/(?P<pull_request_number>[0-9]+)/$', views.PullRequestDetail.as_view(), name='pull-request-detail'),
     url(r'^sessions/$', views.SessionList.as_view(), name='session-list'),
     url(r'^sessions/(?P<username>.+)/(?P<owner>.+)/(?P<name>.+)/(?P<pull_request_number>[0-9]+)/$', views.SessionDetail.as_view(), name='session-detail'),
+    url(r'^sessions/(?P<pk>[0-9]+)/$', views.SessionDetail.as_view(), name='session-pk-detail'),
     url(r'^event-types/$', views.EventTypeList.as_view(), name='event-type-list'),
     url(r'^event-types/(?P<pk>[0-9]+)/$', views.EventTypeDetail.as_view(), name='event-type-detail'),
     url(r'^element-types/$', views.ElementTypeList.as_view(), name='element-type-list'),

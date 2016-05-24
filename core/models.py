@@ -24,7 +24,7 @@ class PullRequest(models.Model):
 
 class Session(models.Model):
     pull_request = models.ForeignKey(PullRequest, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sessions')
 
     class Meta:
         db_table = 'session'

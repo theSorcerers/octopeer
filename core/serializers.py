@@ -26,6 +26,7 @@ class SessionHyperlinkedIdentityField(serializers.HyperlinkedIdentityField):
     def get_url(self, obj, view_name, request, format):
         if obj.pk is None:
             return None
+        print(obj)
         pull_request = getattr(obj, 'pull_request')
         repository = getattr(pull_request, 'repository')
         user = getattr(obj, 'user')
@@ -38,9 +39,15 @@ class SessionHyperlinkedIdentityField(serializers.HyperlinkedIdentityField):
         return self.reverse(view_name, kwargs=kwargs, request=request, format=format)
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
+    sessions = serializers.HyperlinkedRelatedField(
+        many=True,
+        read_only=True,
+        view_name='session-pk-detail'
+    )
+
     class Meta:
         model = User
-        fields = ('url', 'id', 'username')
+        fields = ('url', 'id', 'username', 'sessions')
         extra_kwargs = {
             'url': {'lookup_field': 'username'}
         }
@@ -79,7 +86,7 @@ class SessionSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Session
-        fields = ('url', 'pull_request', 'user')
+        fields = ('url', 'id', 'pull_request', 'user')
 
     def create(self, validated_data):
         pull_request = validated_data.pop('pull_request')
