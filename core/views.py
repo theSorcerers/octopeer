@@ -112,7 +112,7 @@ class SessionDetail(SessionRetrieveAPIView):
     queryset = Session.objects.all()
     serializer_class = SessionSerializer
 
-class EventTypeList(generics.ListCreateAPIView):
+class EventTypeList(generics.ListAPIView):
     queryset = EventType.objects.all()
     serializer_class = EventTypeSerializer
 
@@ -120,7 +120,7 @@ class EventTypeDetail(generics.RetrieveAPIView):
     queryset = EventType.objects.all()
     serializer_class = EventTypeSerializer
 
-class ElementTypeList(generics.ListCreateAPIView):
+class ElementTypeList(generics.ListAPIView):
     queryset = ElementType.objects.all()
     serializer_class = ElementTypeSerializer
 
