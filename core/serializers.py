@@ -72,6 +72,7 @@ class PullRequestSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = PullRequest
         fields = ('url', 'repository', 'pull_request_number')
+        validators = []
 
     def create(self, validated_data):
         repository = validated_data.pop('repository')
@@ -92,6 +93,7 @@ class SessionSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Session
         fields = ('url', 'id', 'pull_request', 'user', 'semantic_events')
+        validators = []
 
     def create(self, validated_data):
         pull_request = validated_data.pop('pull_request')
