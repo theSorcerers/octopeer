@@ -18,6 +18,7 @@ cd /home/vagrant/octopeer
 pip install -r requirements.txt
 ./manage.py migrate
 ./manage.py collectstatic --noinput
+./manage.py loaddata core/fixture.json
 
 sudo tee -a /etc/init/gunicorn.conf << EOF
 description "Gunicorn application server handling Ocotpeer"
