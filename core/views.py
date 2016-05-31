@@ -4,8 +4,8 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
 from rest_framework.views import APIView
-from core.models import User, Repository, PullRequest, Session, EventType, ElementType, SemanticEvent, EventPosition, KeystrokeEvent, MousePositionEvent, MouseClickEvent, MouseScrollEvent, WindowResolutionEvent
-from core.serializers import UserSerializer, RepositorySerializer, PullRequestSerializer, SessionSerializer, EventTypeSerializer, ElementTypeSerializer, SemanticEventSerializer, KeystrokeEventSerializer, MousePositionEventSerializer, MouseClickEventSerializer, MouseScrollEventSerializer, WindowResolutionEventSerializer
+from core.models import User, Repository, PullRequest, Session, EventType, ElementType, SemanticEvent, EventPosition, KeystrokeEvent, MousePositionEvent, MouseClickEvent, MouseScrollEvent, WindowResolutionEvent, ChangeTabEvent
+from core.serializers import UserSerializer, RepositorySerializer, PullRequestSerializer, SessionSerializer, EventTypeSerializer, ElementTypeSerializer, SemanticEventSerializer, KeystrokeEventSerializer, MousePositionEventSerializer, MouseClickEventSerializer, MouseScrollEventSerializer, WindowResolutionEventSerializer, ChangeTabEventSerializer
 
 @api_view(['GET'])
 def api_root(request, format=None):
@@ -22,6 +22,7 @@ def api_root(request, format=None):
         'mouse-click-events': reverse('mouse-click-event-list', request=request, format=format),
         'mouse-scroll-events': reverse('mouse-scroll-event-list', request=request, format=format),
         'window-resolution-events': reverse('window-resolution-event-list', request=request, format=format),
+        'change-tab-events': reverse('change-tab-event-list', request=request, format=format),
     })
 
 class MultipleFieldLookupMixin(object):
@@ -175,3 +176,11 @@ class WindowResolutionEventList(generics.ListCreateAPIView):
 class WindowResolutionEventDetail(generics.RetrieveAPIView):
     queryset = WindowResolutionEvent.objects.all()
     serializer_class = WindowResolutionEventSerializer
+
+class ChangeTabEventList(generics.ListCreateAPIView):
+    queryset = ChangeTabEvent.objects.all()
+    serializer_class = ChangeTabEventSerializer
+
+class ChangeTabEventDetail(generics.RetrieveAPIView):
+    queryset = ChangeTabEvent.objects.all()
+    serializer_class = ChangeTabEventSerializer

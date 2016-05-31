@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from core.models import User, Repository, PullRequest, Session, EventType, ElementType, SemanticEvent, EventPosition, KeystrokeEvent, MousePositionEvent, MouseClickEvent, MouseScrollEvent, WindowResolutionEvent
+from core.models import User, Repository, PullRequest, Session, EventType, ElementType, SemanticEvent, EventPosition, KeystrokeEvent, MousePositionEvent, MouseClickEvent, MouseScrollEvent, WindowResolutionEvent, ChangeTabEvent
 from rest_framework.reverse import reverse
 
 class MultiKeyHyperlinkedIdentityField(serializers.HyperlinkedIdentityField):
@@ -202,3 +202,12 @@ class WindowResolutionEventSerializer(EventSerializer):
     class Meta:
         model = WindowResolutionEvent
         fields = ('url', 'id', 'session', 'width', 'height', 'created_at')
+
+class ChangeTabEventSerializer(EventSerializer):
+    url = serializers.HyperlinkedIdentityField(view_name='change-tab-event-detail')
+    session = SessionSerializer()
+    event_model = ChangeTabEvent
+
+    class Meta:
+        model = ChangeTabEvent
+        fields = ('url', 'id', 'session', 'url', 'created_at')

@@ -105,9 +105,9 @@ class WindowResolutionEvent(RawEvent):
     class Meta:
         db_table = 'window_resolution_event'
 
-class ActiveTabEvent(RawEvent):
-    url = models.CharField(max_length=255)
+class ChangeTabEvent(RawEvent):
+    url = models.URLField(max_length=255)
     created_at = UnixTimeStampField(default=0.0)
 
     class Meta:
-        db_table = 'active_tab_event'
+        db_table = 'change_tab_event'

@@ -30,4 +30,6 @@ urlpatterns = [
     url(r'^mouse-scroll-events/(?P<pk>[0-9]+)/$', views.MouseScrollEventDetail.as_view(), name='mouse-scroll-event-detail'),
     url(r'^window-resolution-events/$', views.WindowResolutionEventList.as_view(), name='window-resolution-event-list'),
     url(r'^window-resolution-events/(?P<pk>[0-9]+)/$', views.WindowResolutionEventDetail.as_view(), name='window-resolution-event-detail'),
+    url(r'^change-tab-events/$', views.ChangeTabEventList.as_view(), name='change-tab-event-list'),
+    url(r'^change-tab-events/(?P<pk>[0-9]+)/$', views.ChangeTabEventDetail.as_view(), name='change-tab-event-detail'),
 ]
