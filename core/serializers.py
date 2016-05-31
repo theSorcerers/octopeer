@@ -52,6 +52,10 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
             'url': {'lookup_field': 'username'}
         }
 
+    def create(self, validated_data):
+        (user, _) = User.objects.get_or_create(**validated_data)
+        return user
+
 class RepositoryHyperlinkedIdentityField(MultiKeyHyperlinkedIdentityField):
     identity_args = {
         'owner': 'owner',
@@ -64,6 +68,10 @@ class RepositorySerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Repository
         fields = ('url', 'owner', 'name', 'platform')
+
+    def create(self, validated_data):
+        (repository, _) = Repository.objects.get_or_create(**validated_data)
+        return repository
 
 class PullRequestSerializer(serializers.HyperlinkedModelSerializer):
     url = PullRequestHyperlinkedIdentityField(view_name='pull-request-detail')

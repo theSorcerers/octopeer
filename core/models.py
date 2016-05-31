@@ -2,7 +2,7 @@ from django.db import models
 from core.fields import UnixTimeStampField
 
 class User(models.Model):
-    username = models.CharField(max_length=255, unique=True)
+    username = models.CharField(max_length=255)
 
     class Meta:
         db_table = 'user'
@@ -14,7 +14,6 @@ class Repository(models.Model):
 
     class Meta:
         db_table = 'repository'
-        unique_together = ('owner', 'name', 'platform')
 
 class PullRequest(models.Model):
     repository = models.ForeignKey(Repository, on_delete=models.CASCADE, null=True)
@@ -22,7 +21,6 @@ class PullRequest(models.Model):
 
     class Meta:
         db_table = 'pull_request'
-        unique_together = ('repository', 'pull_request_number')
 
 class Session(models.Model):
     pull_request = models.ForeignKey(PullRequest, on_delete=models.CASCADE)
@@ -30,18 +28,17 @@ class Session(models.Model):
 
     class Meta:
         db_table = 'session'
-        unique_together = ('pull_request', 'user')
 
 class EventType(models.Model):
     id = models.PositiveIntegerField(primary_key=True)
-    name = models.CharField(max_length=255, unique=True)
+    name = models.CharField(max_length=255)
 
     class Meta:
         db_table = 'event_type'
 
 class ElementType(models.Model):
     id = models.PositiveIntegerField(primary_key=True)
-    name = models.CharField(max_length=255, unique=True)
+    name = models.CharField(max_length=255)
 
     class Meta:
         db_table = 'element_type'
