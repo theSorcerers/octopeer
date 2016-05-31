@@ -47,8 +47,7 @@ class SemanticEvent(models.Model):
     session = models.ForeignKey(Session, on_delete=models.CASCADE, related_name='semantic_events')
     event_type = models.ForeignKey(EventType, on_delete=models.CASCADE)
     element_type = models.ForeignKey(ElementType, on_delete=models.CASCADE)
-    started_at = UnixTimeStampField(default=0.0)
-    duration = models.PositiveIntegerField()
+    created_at = UnixTimeStampField(default=0.0)
 
     class Meta:
         db_table = 'semantic_event'
@@ -62,13 +61,14 @@ class EventPosition(models.Model):
 
 class RawEvent(models.Model):
     session = models.ForeignKey(Session, on_delete=models.CASCADE)
-    created_at = UnixTimeStampField(default=0.0)
 
     class Meta:
         abstract = True
 
 class KeystrokeEvent(RawEvent):
     keystroke = models.CharField(max_length=255)
+    key_down_at = UnixTimeStampField(default=0.0, null=True)
+    key_up_at = UnixTimeStampField(default=0.0, null=True)
 
     class Meta:
         db_table = 'keystroke_event'
@@ -78,11 +78,13 @@ class MousePositionEvent(RawEvent):
     position_y = models.IntegerField()
     viewport_x = models.IntegerField()
     viewport_y = models.IntegerField()
+    created_at = UnixTimeStampField(default=0.0)
 
     class Meta:
         db_table = 'mouse_position_event'
 
 class MouseClickEvent(RawEvent):
+    created_at = UnixTimeStampField(default=0.0)
 
     class Meta:
         db_table = 'mouse_click_event'
@@ -90,6 +92,7 @@ class MouseClickEvent(RawEvent):
 class MouseScrollEvent(RawEvent):
     viewport_x = models.IntegerField()
     viewport_y = models.IntegerField()
+    created_at = UnixTimeStampField(default=0.0)
 
     class Meta:
         db_table = 'mouse_scroll_event'
@@ -97,6 +100,14 @@ class MouseScrollEvent(RawEvent):
 class WindowResolutionEvent(RawEvent):
     width = models.IntegerField()
     height = models.IntegerField()
+    created_at = UnixTimeStampField(default=0.0)
 
     class Meta:
-        db_table = 'window_resolution'
+        db_table = 'window_resolution_event'
+
+class ActiveTabEvent(RawEvent):
+    url = models.CharField(max_length=255)
+    created_at = UnixTimeStampField(default=0.0)
+
+    class Meta:
+        db_table = 'active_tab_event'

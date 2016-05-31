@@ -156,7 +156,7 @@ class SemanticEventSerializer(EventSerializer):
 
     class Meta:
         model = SemanticEvent
-        fields = ('url', 'id', 'session', 'event_type', 'element_type', 'started_at', 'duration')
+        fields = ('url', 'id', 'session', 'event_type', 'element_type', 'created_at')
 
 class KeystrokeEventSerializer(EventSerializer):
     url = serializers.HyperlinkedIdentityField(view_name='keystroke-event-detail')
@@ -165,7 +165,7 @@ class KeystrokeEventSerializer(EventSerializer):
 
     class Meta:
         model = KeystrokeEvent
-        fields = ('url', 'id', 'session', 'keystroke', 'created_at')
+        fields = ('url', 'id', 'session', 'keystroke', 'key_down_at', 'key_up_at')
 
 class MousePositionEventSerializer(EventSerializer):
     url = serializers.HyperlinkedIdentityField(view_name='mouse-position-event-detail')
