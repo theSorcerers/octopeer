@@ -1,28 +1,55 @@
-from rest_framework import viewsets, mixins, generics
+from core.models import (
+    ChangeTabEvent,
+    ElementType,
+    EventType,
+    KeystrokeEvent,
+    MouseClickEvent,
+    MousePositionEvent,
+    MouseScrollEvent,
+    PullRequest,
+    Repository,
+    SemanticEvent,
+    Session,
+    User,
+    WindowResolutionEvent,
+)
+from core.serializers import (
+    UserSerializer,
+    ChangeTabEventSerializer,
+    ElementTypeSerializer,
+    EventTypeSerializer,
+    KeystrokeEventSerializer,
+    MouseClickEventSerializer,
+    MousePositionEventSerializer,
+    MouseScrollEventSerializer,
+    PullRequestSerializer,
+    RepositorySerializer,
+    SemanticEventSerializer,
+    SessionSerializer,
+    WindowResolutionEventSerializer,
+)
 from django.shortcuts import get_object_or_404
+from rest_framework import viewsets, mixins, generics
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
-from rest_framework.views import APIView
-from core.models import User, Repository, PullRequest, Session, EventType, ElementType, SemanticEvent, EventPosition, KeystrokeEvent, MousePositionEvent, MouseClickEvent, MouseScrollEvent, WindowResolutionEvent, ChangeTabEvent
-from core.serializers import UserSerializer, RepositorySerializer, PullRequestSerializer, SessionSerializer, EventTypeSerializer, ElementTypeSerializer, SemanticEventSerializer, KeystrokeEventSerializer, MousePositionEventSerializer, MouseClickEventSerializer, MouseScrollEventSerializer, WindowResolutionEventSerializer, ChangeTabEventSerializer
 
 @api_view(['GET'])
 def api_root(request, format=None):
     return Response({
-        'users': reverse('user-list', request=request, format=format),
-        'repositories': reverse('repository-list', request=request, format=format),
-        'pull-requests': reverse('pull-request-list', request=request, format=format),
-        'sessions': reverse('session-list', request=request, format=format),
-        'event-types': reverse('event-type-list', request=request, format=format),
-        'element-types': reverse('element-type-list', request=request, format=format),
-        'semantic-events': reverse('semantic-event-list', request=request, format=format),
-        'keystroke-events': reverse('keystroke-event-list', request=request, format=format),
-        'mouse-position-events': reverse('mouse-position-event-list', request=request, format=format),
-        'mouse-click-events': reverse('mouse-click-event-list', request=request, format=format),
-        'mouse-scroll-events': reverse('mouse-scroll-event-list', request=request, format=format),
-        'window-resolution-events': reverse('window-resolution-event-list', request=request, format=format),
         'change-tab-events': reverse('change-tab-event-list', request=request, format=format),
+        'element-types': reverse('element-type-list', request=request, format=format),
+        'event-types': reverse('event-type-list', request=request, format=format),
+        'keystroke-events': reverse('keystroke-event-list', request=request, format=format),
+        'mouse-click-events': reverse('mouse-click-event-list', request=request, format=format),
+        'mouse-position-events': reverse('mouse-position-event-list', request=request, format=format),
+        'mouse-scroll-events': reverse('mouse-scroll-event-list', request=request, format=format),
+        'pull-requests': reverse('pull-request-list', request=request, format=format),
+        'repositories': reverse('repository-list', request=request, format=format),
+        'semantic-events': reverse('semantic-event-list', request=request, format=format),
+        'sessions': reverse('session-list', request=request, format=format),
+        'users': reverse('user-list', request=request, format=format),
+        'window-resolution-events': reverse('window-resolution-event-list', request=request, format=format),
     })
 
 class MultipleFieldLookupMixin(object):
@@ -63,7 +90,6 @@ class SessionRetrieveAPIView(generics.RetrieveAPIView):
         queryset = self.filter_queryset(queryset)  # Apply any filter backends
         if 'pk' in self.kwargs:
             id = self.kwargs['pk']
-            session = Session.objects.get(id=id)
             filter = { 'id': id }
             return get_object_or_404(queryset, **filter)
         username = self.kwargs['username']

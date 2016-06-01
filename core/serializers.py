@@ -1,6 +1,19 @@
+from core.models import (
+    ChangeTabEvent,
+    ElementType,
+    EventType,
+    KeystrokeEvent,
+    MouseClickEvent,
+    MousePositionEvent,
+    MouseScrollEvent,
+    PullRequest,
+    Repository,
+    SemanticEvent,
+    Session,
+    User,
+    WindowResolutionEvent,
+)
 from rest_framework import serializers
-from core.models import User, Repository, PullRequest, Session, EventType, ElementType, SemanticEvent, EventPosition, KeystrokeEvent, MousePositionEvent, MouseClickEvent, MouseScrollEvent, WindowResolutionEvent, ChangeTabEvent
-from rest_framework.reverse import reverse
 
 class MultiKeyHyperlinkedIdentityField(serializers.HyperlinkedIdentityField):
     identity_args = {}

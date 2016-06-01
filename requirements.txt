@@ -1,6 +1,8 @@
 Django==1.9.4
 django-cors-headers==1.1.0
+django-unixtimestampfield==0.3.9
 djangorestframework==3.3.3
 drfdocs==0.0.9
 gunicorn==19.5.0
 psycopg2==2.6.1
+pyflakes==1.2.3

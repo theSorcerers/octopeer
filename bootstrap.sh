@@ -5,6 +5,7 @@ echo 'LC_ALL="en_US.UTF-8"' | sudo tee -a /etc/environment
 sudo apt-get update
 sudo apt-get install -y build-essential python-pip python3-dev postgresql postgresql-contrib libpq-dev nginx
 
+sudo -u postgres psql -c "CREATE DATABASE vagrant;"
 sudo -u postgres psql -c "CREATE DATABASE octopeer;"
 sudo -u postgres psql -c "CREATE USER vagrant WITH PASSWORD 'password';"
 sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE octopeer TO vagrant;"
@@ -16,12 +17,13 @@ virtualenv env -p python3
 source env/bin/activate
 cd /home/vagrant/octopeer
 pip install -r requirements.txt
-./manage.py migrate
-./manage.py collectstatic --noinput
-./manage.py loaddata core/fixture.json
+python manage.py makemigrations corsheaders
+python manage.py migrate
+python manage.py collectstatic --noinput
+python manage.py loaddata core/fixtures/*.json
 
 sudo tee -a /etc/init/gunicorn.conf << EOF
-description "Gunicorn application server handling Ocotpeer"
+description "Gunicorn application server handling Octopeer"
 
 start on runlevel [2345]
 stop on runlevel [!2345]
