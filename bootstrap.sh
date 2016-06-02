@@ -22,6 +22,10 @@ python manage.py migrate
 python manage.py collectstatic --noinput
 python manage.py loaddata core/fixtures/*.json
 
+tee -a /home/vagrant/.bash_aliases << EOF
+alias octoserver='python /home/vagrant/octopeer/manage.py runserver 0.0.0.0:8000'
+EOF
+
 sudo tee -a /etc/init/gunicorn.conf << EOF
 description "Gunicorn application server handling Octopeer"
 

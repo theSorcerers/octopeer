@@ -163,8 +163,8 @@ class EventSerializer(serializers.HyperlinkedModelSerializer):
 class SemanticEventSerializer(EventSerializer):
     url = serializers.HyperlinkedIdentityField(view_name='semantic-event-detail')
     session = SessionSerializer()
-    event_type = serializers.HyperlinkedRelatedField(view_name='event-type-detail', queryset=EventType.objects.all())
-    element_type = serializers.HyperlinkedRelatedField(view_name='element-type-detail', queryset=ElementType.objects.all())
+    event_type = serializers.PrimaryKeyRelatedField(queryset=EventType.objects.all())
+    element_type = serializers.PrimaryKeyRelatedField(queryset=ElementType.objects.all())
     event_model = SemanticEvent
 
     class Meta:
