@@ -1,6 +1,7 @@
 from django.db import models
 from unixtimestampfield.fields import UnixTimeStampField
 
+
 class User(models.Model):
     id = models.AutoField(primary_key=True, unique=True)
     username = models.CharField(max_length=255)
@@ -47,6 +48,13 @@ class ElementType(models.Model):
     class Meta:
         db_table = 'element_type'
 
+class RawEvent(models.Model):
+    id = models.AutoField(primary_key=True, unique=True)
+    session = models.ForeignKey(Session, on_delete=models.CASCADE)
+
+    class Meta:
+        abstract = True
+
 class SemanticEvent(models.Model):
     id = models.AutoField(primary_key=True, unique=True)
     session = models.ForeignKey(Session, on_delete=models.CASCADE, related_name='semantic_events')
@@ -64,13 +72,6 @@ class EventPosition(models.Model):
 
     class Meta:
         db_table = 'event_position'
-
-class RawEvent(models.Model):
-    id = models.AutoField(primary_key=True, unique=True)
-    session = models.ForeignKey(Session, on_delete=models.CASCADE)
-
-    class Meta:
-        abstract = True
 
 class KeystrokeEvent(RawEvent):
     keystroke = models.CharField(max_length=255)
@@ -100,6 +101,7 @@ class MouseScrollEvent(RawEvent):
     viewport_x = models.IntegerField()
     viewport_y = models.IntegerField()
     created_at = UnixTimeStampField(default=0.0)
+
 
     class Meta:
         db_table = 'mouse_scroll_event'

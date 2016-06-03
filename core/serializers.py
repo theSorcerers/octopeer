@@ -13,43 +13,9 @@ from core.models import (
     User,
     WindowResolutionEvent,
 )
+import core.serializer_fields as fields
 from rest_framework import serializers
 
-class MultiKeyHyperlinkedIdentityField(serializers.HyperlinkedIdentityField):
-    identity_args = {}
-    def get_url(self, obj, view_name, request, format):
-        if obj.pk is None:
-            return None
-        kwargs = dict((url_kw, getattr(obj, prop)) for url_kw, prop in self.identity_args.items())
-        return self.reverse(view_name, kwargs=kwargs, request=request, format=format)
-
-class PullRequestHyperlinkedIdentityField(serializers.HyperlinkedIdentityField):
-    def get_url(self, obj, view_name, request, format):
-        if obj.pk is None:
-            return None
-        repository = getattr(obj, 'repository')
-        kwargs = {
-            'owner': getattr(repository, 'owner'),
-            'name': getattr(repository, 'name'),
-            'pull_request_number': getattr(obj, 'pull_request_number')
-        }
-        return self.reverse(view_name, kwargs=kwargs, request=request, format=format)
-
-class SessionHyperlinkedIdentityField(serializers.HyperlinkedIdentityField):
-    def get_url(self, obj, view_name, request, format):
-        if obj.pk is None:
-            return None
-        print(obj)
-        pull_request = getattr(obj, 'pull_request')
-        repository = getattr(pull_request, 'repository')
-        user = getattr(obj, 'user')
-        kwargs = {
-            'username': getattr(user, 'username'),
-            'owner': getattr(repository, 'owner'),
-            'name': getattr(repository, 'name'),
-            'pull_request_number': getattr(pull_request, 'pull_request_number')
-        }
-        return self.reverse(view_name, kwargs=kwargs, request=request, format=format)
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     sessions = serializers.HyperlinkedRelatedField(
@@ -66,43 +32,36 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         }
 
     def create(self, validated_data):
-        (user, _) = User.objects.get_or_create(**validated_data)
+        user, created = User.objects.get_or_create(**validated_data)
         return user
 
-class RepositoryHyperlinkedIdentityField(MultiKeyHyperlinkedIdentityField):
-    identity_args = {
-        'owner': 'owner',
-        'name': 'name'
-    }
-
 class RepositorySerializer(serializers.HyperlinkedModelSerializer):
-    url = RepositoryHyperlinkedIdentityField(view_name='repository-detail')
+    url = fields.RepositoryHyperlinkedIdentityField(view_name='repository-detail')
 
     class Meta:
         model = Repository
         fields = ('url', 'owner', 'name', 'platform')
 
     def create(self, validated_data):
-        (repository, _) = Repository.objects.get_or_create(**validated_data)
+        repository, created = Repository.objects.get_or_create(**validated_data)
         return repository
 
 class PullRequestSerializer(serializers.HyperlinkedModelSerializer):
-    url = PullRequestHyperlinkedIdentityField(view_name='pull-request-detail')
+    url = fields.PullRequestHyperlinkedIdentityField(view_name='pull-request-detail')
     repository = RepositorySerializer()
 
     class Meta:
         model = PullRequest
         fields = ('url', 'repository', 'pull_request_number')
-        validators = []
 
     def create(self, validated_data):
         repository = validated_data.pop('repository')
-        (repository, _) = Repository.objects.get_or_create(**repository)
-        (pullrequest, _) = PullRequest.objects.get_or_create(repository=repository, **validated_data)
-        return pullrequest
+        repository, created = Repository.objects.get_or_create(**repository)
+        pull_request, created = PullRequest.objects.get_or_create(repository=repository, **validated_data)
+        return pull_request
 
 class SessionSerializer(serializers.HyperlinkedModelSerializer):
-    url = SessionHyperlinkedIdentityField(view_name='session-detail')
+    url = fields.SessionHyperlinkedIdentityField(view_name='session-detail')
     pull_request = PullRequestSerializer()
     user = UserSerializer()
     semantic_events = serializers.HyperlinkedRelatedField(
@@ -114,16 +73,15 @@ class SessionSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Session
         fields = ('url', 'id', 'pull_request', 'user', 'semantic_events')
-        validators = []
 
     def create(self, validated_data):
+        user = validated_data.pop('user')
         pull_request = validated_data.pop('pull_request')
         repository = pull_request.pop('repository')
-        (repository, _) = Repository.objects.get_or_create(**repository)
-        (pull_request, _) = PullRequest.objects.get_or_create(repository=repository, **pull_request)
-        user = validated_data.pop('user')
-        (user, _) = User.objects.get_or_create(**user)
-        (session, _) = Session.objects.get_or_create(pull_request=pull_request, user=user, **validated_data)
+        user, created = User.objects.get_or_create(**user)
+        repository, created = Repository.objects.get_or_create(**repository)
+        pull_request, created = PullRequest.objects.get_or_create(repository=repository, **pull_request)
+        session, created = Session.objects.get_or_create(pull_request=pull_request, user=user)
         return session
 
 class EventTypeSerializer(serializers.HyperlinkedModelSerializer):
@@ -141,31 +99,27 @@ class ElementTypeSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('url', 'id', 'name')
 
 class EventSerializer(serializers.HyperlinkedModelSerializer):
-    @property
-    def event_model(self):
-        raise NotImplementedError
+    session = SessionSerializer()
 
     class Meta:
         abstract = True
 
     def create(self, validated_data):
         session = validated_data.pop('session')
+        user = session.pop('user')
         pull_request = session.pop('pull_request')
         repository = pull_request.pop('repository')
-        user = session.pop('user')
-        (repository, _) = Repository.objects.get_or_create(**repository)
-        (pull_request, _) = PullRequest.objects.get_or_create(repository=repository, **pull_request)
-        (user, _) = User.objects.get_or_create(**user)
-        (session, _) = Session.objects.get_or_create(pull_request=pull_request, user=user)
-        (event, _) = self.event_model.objects.get_or_create(session=session, **validated_data)
+        user, created = User.objects.get_or_create(**user)
+        repository, created = Repository.objects.get_or_create(**repository)
+        pull_request, created = PullRequest.objects.get_or_create(repository=repository, **pull_request)
+        session, created = Session.objects.get_or_create(pull_request=pull_request, user=user)
+        event, created = self.Meta.model.objects.get_or_create(session=session, **validated_data)
         return event
 
 class SemanticEventSerializer(EventSerializer):
     url = serializers.HyperlinkedIdentityField(view_name='semantic-event-detail')
-    session = SessionSerializer()
     event_type = serializers.PrimaryKeyRelatedField(queryset=EventType.objects.all())
     element_type = serializers.PrimaryKeyRelatedField(queryset=ElementType.objects.all())
-    event_model = SemanticEvent
 
     class Meta:
         model = SemanticEvent
@@ -173,8 +127,6 @@ class SemanticEventSerializer(EventSerializer):
 
 class KeystrokeEventSerializer(EventSerializer):
     url = serializers.HyperlinkedIdentityField(view_name='keystroke-event-detail')
-    session = SessionSerializer()
-    event_model = KeystrokeEvent
 
     class Meta:
         model = KeystrokeEvent
@@ -182,8 +134,6 @@ class KeystrokeEventSerializer(EventSerializer):
 
 class MousePositionEventSerializer(EventSerializer):
     url = serializers.HyperlinkedIdentityField(view_name='mouse-position-event-detail')
-    session = SessionSerializer()
-    event_model = MousePositionEvent
 
     class Meta:
         model = MousePositionEvent
@@ -191,8 +141,6 @@ class MousePositionEventSerializer(EventSerializer):
 
 class MouseClickEventSerializer(EventSerializer):
     url = serializers.HyperlinkedIdentityField(view_name='mouse-click-event-detail')
-    session = SessionSerializer()
-    event_model = MouseClickEvent
 
     class Meta:
         model = MouseClickEvent
@@ -200,8 +148,6 @@ class MouseClickEventSerializer(EventSerializer):
 
 class MouseScrollEventSerializer(EventSerializer):
     url = serializers.HyperlinkedIdentityField(view_name='mouse-scroll-event-detail')
-    session = SessionSerializer()
-    event_model = MouseScrollEvent
 
     class Meta:
         model = MouseScrollEvent
@@ -209,8 +155,6 @@ class MouseScrollEventSerializer(EventSerializer):
 
 class WindowResolutionEventSerializer(EventSerializer):
     url = serializers.HyperlinkedIdentityField(view_name='window-resolution-event-detail')
-    session = SessionSerializer()
-    event_model = WindowResolutionEvent
 
     class Meta:
         model = WindowResolutionEvent
@@ -218,8 +162,6 @@ class WindowResolutionEventSerializer(EventSerializer):
 
 class ChangeTabEventSerializer(EventSerializer):
     url = serializers.HyperlinkedIdentityField(view_name='change-tab-event-detail')
-    session = SessionSerializer()
-    event_model = ChangeTabEvent
 
     class Meta:
         model = ChangeTabEvent
