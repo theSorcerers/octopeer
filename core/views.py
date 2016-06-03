@@ -52,59 +52,6 @@ def api_root(request, format=None):
         'window-resolution-events': reverse('window-resolution-event-list', request=request, format=format),
     })
 
-class MultipleFieldLookupMixin(object):
-    """
-    Apply this mixin to any view or viewset to get multiple field filtering
-    based on a `lookup_fields` attribute, instead of the default single field filtering.
-    """
-    def get_object(self):
-        queryset = self.get_queryset()             # Get the base queryset
-        queryset = self.filter_queryset(queryset)  # Apply any filter backends
-        filter = {}
-        for field in self.lookup_fields:
-            filter[field] = self.kwargs[field]
-        return get_object_or_404(queryset, **filter)  # Lookup the object
-
-class CreateListRetrieveViewSet(mixins.CreateModelMixin, mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet):
-    pass
-
-class MultipleFieldRetrieveAPIView(MultipleFieldLookupMixin, generics.RetrieveAPIView):
-    pass
-
-class PullRequestRetrieveAPIView(generics.RetrieveAPIView):
-    def get_object(self):
-        queryset = self.get_queryset()             # Get the base queryset
-        queryset = self.filter_queryset(queryset)  # Apply any filter backends
-        owner = self.kwargs['owner']
-        name = self.kwargs['name']
-        repository = Repository.objects.get(owner=owner, name=name)
-        filter = {
-            'repository': repository,
-            'pull_request_number': self.kwargs['pull_request_number']
-        }
-        return get_object_or_404(queryset, **filter)  # Lookup the object
-
-class SessionRetrieveAPIView(generics.RetrieveAPIView):
-    def get_object(self):
-        queryset = self.get_queryset()             # Get the base queryset
-        queryset = self.filter_queryset(queryset)  # Apply any filter backends
-        if 'pk' in self.kwargs:
-            id = self.kwargs['pk']
-            filter = { 'id': id }
-            return get_object_or_404(queryset, **filter)
-        username = self.kwargs['username']
-        owner = self.kwargs['owner']
-        name = self.kwargs['name']
-        pull_request_number = self.kwargs['pull_request_number']
-        user = User.objects.get(username=username)
-        repository = Repository.objects.get(owner=owner, name=name)
-        pull_request = PullRequest.objects.get(repository=repository, pull_request_number=pull_request_number)
-        filter = {
-            'pull_request': pull_request,
-            'user': user
-        }
-        return get_object_or_404(queryset, **filter)  # Lookup the object
-
 class UserList(generics.ListCreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
@@ -118,26 +65,68 @@ class RepositoryList(generics.ListCreateAPIView):
     queryset = Repository.objects.all()
     serializer_class = RepositorySerializer
 
-class RepositoryDetail(MultipleFieldRetrieveAPIView):
+class RepositoryDetail(generics.RetrieveAPIView):
     queryset = Repository.objects.all()
     serializer_class = RepositorySerializer
-    lookup_fields = ('owner', 'name')
+
+    def get_object(self):
+        queryset = self.get_queryset()             # Get the base queryset
+        queryset = self.filter_queryset(queryset)  # Apply any filter backends
+        filter = {
+            'owner': self.kwargs['owner'],
+            'name': self.kwargs['name']
+        }
+        return get_object_or_404(queryset, **filter)  # Lookup the object
 
 class PullRequestList(generics.ListCreateAPIView):
     queryset = PullRequest.objects.all()
     serializer_class = PullRequestSerializer
 
-class PullRequestDetail(PullRequestRetrieveAPIView):
+class PullRequestDetail(generics.RetrieveAPIView):
     queryset = PullRequest.objects.all()
     serializer_class = PullRequestSerializer
+
+    def get_object(self):
+        queryset = self.get_queryset()             # Get the base queryset
+        queryset = self.filter_queryset(queryset)  # Apply any filter backends
+        repository = Repository.objects.get(
+            owner=self.kwargs['owner'],
+            name=self.kwargs['name']
+        )
+        filter = {
+            'repository': repository,
+            'pull_request_number': self.kwargs['pull_request_number']
+        }
+        return get_object_or_404(queryset, **filter)  # Lookup the object
 
 class SessionList(generics.ListCreateAPIView):
     queryset = Session.objects.all()
     serializer_class = SessionSerializer
 
-class SessionDetail(SessionRetrieveAPIView):
+class SessionDetail(generics.RetrieveAPIView):
     queryset = Session.objects.all()
     serializer_class = SessionSerializer
+
+    def get_object(self):
+        queryset = self.get_queryset()             # Get the base queryset
+        queryset = self.filter_queryset(queryset)  # Apply any filter backends
+        if 'pk' in self.kwargs:
+            filter = { 'id': self.kwargs['pk'] }
+            return get_object_or_404(queryset, **filter)
+        user = User.objects.get(username=self.kwargs['username'])
+        repository = Repository.objects.get(
+            owner=self.kwargs['owner'],
+            name=self.kwargs['name']
+        )
+        pull_request = PullRequest.objects.get(
+            repository=repository,
+            pull_request_number=self.kwargs['pull_request_number']
+        )
+        filter = {
+            'pull_request': pull_request,
+            'user': user
+        }
+        return get_object_or_404(queryset, **filter)  # Lookup the object
 
 class EventTypeList(generics.ListAPIView):
     queryset = EventType.objects.all()
