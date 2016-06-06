@@ -51,6 +51,7 @@ class ElementType(models.Model):
 class RawEvent(models.Model):
     id = models.AutoField(primary_key=True, unique=True)
     session = models.ForeignKey(Session, on_delete=models.CASCADE)
+    created_at = UnixTimeStampField(default=0.0)
 
     class Meta:
         abstract = True
@@ -73,10 +74,16 @@ class EventPosition(models.Model):
     class Meta:
         db_table = 'event_position'
 
+class KeystrokeType(models.Model):
+    id = models.PositiveIntegerField(primary_key=True, unique=True)
+    name = models.CharField(max_length=255)
+
+    class Meta:
+        db_table = 'keystroke_type'
+
 class KeystrokeEvent(RawEvent):
     keystroke = models.CharField(max_length=255)
-    key_down_at = UnixTimeStampField(default=0.0, null=True)
-    key_up_at = UnixTimeStampField(default=0.0, null=True)
+    keystroke_type = models.ForeignKey(KeystrokeType, on_delete=models.CASCADE)
 
     class Meta:
         db_table = 'keystroke_event'
@@ -86,21 +93,17 @@ class MousePositionEvent(RawEvent):
     position_y = models.IntegerField()
     viewport_x = models.IntegerField()
     viewport_y = models.IntegerField()
-    created_at = UnixTimeStampField(default=0.0)
 
     class Meta:
         db_table = 'mouse_position_event'
 
 class MouseClickEvent(RawEvent):
-    created_at = UnixTimeStampField(default=0.0)
-
     class Meta:
         db_table = 'mouse_click_event'
 
 class MouseScrollEvent(RawEvent):
     viewport_x = models.IntegerField()
     viewport_y = models.IntegerField()
-    created_at = UnixTimeStampField(default=0.0)
 
     class Meta:
         db_table = 'mouse_scroll_event'
@@ -108,21 +111,18 @@ class MouseScrollEvent(RawEvent):
 class WindowResolutionEvent(RawEvent):
     width = models.IntegerField()
     height = models.IntegerField()
-    created_at = UnixTimeStampField(default=0.0)
 
     class Meta:
         db_table = 'window_resolution_event'
 
 class ChangeTabEvent(RawEvent):
     url = models.URLField(max_length=255)
-    created_at = UnixTimeStampField(default=0.0)
 
     class Meta:
         db_table = 'change_tab_event'
 
 class HTMLPage(RawEvent):
     dom = models.TextField()
-    created_at = UnixTimeStampField(default=0.0)
 
     class Meta:
         db_table = 'html_page'

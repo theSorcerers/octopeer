@@ -4,6 +4,7 @@ from core.models import (
     EventType,
     HTMLPage,
     KeystrokeEvent,
+    KeystrokeType,
     MouseClickEvent,
     MousePositionEvent,
     MouseScrollEvent,
@@ -21,6 +22,7 @@ from core.serializers import (
     EventTypeSerializer,
     HTMLPageSerializer,
     KeystrokeEventSerializer,
+    KeystrokeTypeSerializer,
     MouseClickEventSerializer,
     MousePositionEventSerializer,
     MouseScrollEventSerializer,
@@ -45,6 +47,7 @@ def api_root(request, format=None):
         'event-types': reverse('event-type-list', request=request, format=format),
         'html-pages': reverse('html-page-list', request=request, format=format),
         'keystroke-events': reverse('keystroke-event-list', request=request, format=format),
+        'keystroke-types': reverse('keystroke-type-list', request=request, format=format),
         'mouse-click-events': reverse('mouse-click-event-list', request=request, format=format),
         'mouse-position-events': reverse('mouse-position-event-list', request=request, format=format),
         'mouse-scroll-events': reverse('mouse-scroll-event-list', request=request, format=format),
@@ -163,6 +166,14 @@ class KeystrokeEventList(generics.ListCreateAPIView):
 class KeystrokeEventDetail(generics.RetrieveAPIView):
     queryset = KeystrokeEvent.objects.all()
     serializer_class = KeystrokeEventSerializer
+
+class KeystrokeTypeList(generics.ListAPIView):
+    queryset = KeystrokeType.objects.all()
+    serializer_class = KeystrokeTypeSerializer
+
+class KeystrokeTypeDetail(generics.RetrieveAPIView):
+    queryset = KeystrokeType.objects.all()
+    serializer_class = KeystrokeTypeSerializer
 
 class MousePositionEventList(generics.ListCreateAPIView):
     queryset = MousePositionEvent.objects.all()

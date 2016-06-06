@@ -4,6 +4,7 @@ from core.models import (
     EventType,
     HTMLPage,
     KeystrokeEvent,
+    KeystrokeType,
     MouseClickEvent,
     MousePositionEvent,
     MouseScrollEvent,
@@ -126,12 +127,20 @@ class SemanticEventSerializer(EventSerializer):
         model = SemanticEvent
         fields = ('url', 'id', 'session', 'event_type', 'element_type', 'created_at')
 
+class KeystrokeTypeSerializer(serializers.HyperlinkedModelSerializer):
+    url = serializers.HyperlinkedIdentityField(view_name='keystroke-type-detail')
+
+    class Meta:
+        model = KeystrokeType
+        fields = ('url', 'id', 'name')
+
 class KeystrokeEventSerializer(EventSerializer):
     url = serializers.HyperlinkedIdentityField(view_name='keystroke-event-detail')
+    keystroke_type = serializers.PrimaryKeyRelatedField(queryset=KeystrokeType.objects.all())
 
     class Meta:
         model = KeystrokeEvent
-        fields = ('url', 'id', 'session', 'keystroke', 'key_down_at', 'key_up_at')
+        fields = ('url', 'id', 'session', 'keystroke', 'keystroke_type', 'created_at')
 
 class MousePositionEventSerializer(EventSerializer):
     url = serializers.HyperlinkedIdentityField(view_name='mouse-position-event-detail')

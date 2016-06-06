@@ -1,0 +1,4 @@
+[
+{"model": "core.keystroketype", "pk": 1, "fields": {"name": "Key down"}},
+{"model": "core.keystroketype", "pk": 2, "fields": {"name": "Key up"}}
+]

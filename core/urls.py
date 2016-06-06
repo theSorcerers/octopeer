@@ -20,6 +20,9 @@ urlpatterns = [
     url(r'^keystroke-events/$', views.KeystrokeEventList.as_view(), name='keystroke-event-list'),
     url(r'^keystroke-events/(?P<pk>[0-9]+)/$', views.KeystrokeEventDetail.as_view(), name='keystroke-event-detail'),
 
+    url(r'^keystroke-types/$', views.KeystrokeTypeList.as_view(), name='keystroke-type-list'),
+    url(r'^keystroke-types/(?P<pk>[0-9]+)/$', views.KeystrokeTypeDetail.as_view(), name='keystroke-type-detail'),
+
     url(r'^mouse-click-events/$', views.MouseClickEventList.as_view(), name='mouse-click-event-list'),
     url(r'^mouse-click-events/(?P<pk>[0-9]+)/$', views.MouseClickEventDetail.as_view(), name='mouse-click-event-detail'),
 
