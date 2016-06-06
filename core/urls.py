@@ -14,6 +14,9 @@ urlpatterns = [
     url(r'^event-types/$', views.EventTypeList.as_view(), name='event-type-list'),
     url(r'^event-types/(?P<pk>[0-9]+)/$', views.EventTypeDetail.as_view(), name='event-type-detail'),
 
+    url(r'^html-pages/$', views.HTMLPageList.as_view(), name='html-page-list'),
+    url(r'^html-pages/(?P<pk>[0-9]+)/$', views.HTMLPageDetail.as_view(), name='html-page-detail'),
+
     url(r'^keystroke-events/$', views.KeystrokeEventList.as_view(), name='keystroke-event-list'),
     url(r'^keystroke-events/(?P<pk>[0-9]+)/$', views.KeystrokeEventDetail.as_view(), name='keystroke-event-detail'),
 

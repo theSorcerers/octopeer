@@ -2,6 +2,7 @@ from core.models import (
     ChangeTabEvent,
     ElementType,
     EventType,
+    HTMLPage,
     KeystrokeEvent,
     MouseClickEvent,
     MousePositionEvent,
@@ -166,3 +167,10 @@ class ChangeTabEventSerializer(EventSerializer):
     class Meta:
         model = ChangeTabEvent
         fields = ('url', 'id', 'session', 'url', 'created_at')
+
+class HTMLPageSerializer(EventSerializer):
+    url = serializers.HyperlinkedIdentityField(view_name='html-page-detail')
+
+    class Meta:
+        model = HTMLPage
+        fields = ('url', 'id', 'session', 'dom', 'created_at')

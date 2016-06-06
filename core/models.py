@@ -102,7 +102,6 @@ class MouseScrollEvent(RawEvent):
     viewport_y = models.IntegerField()
     created_at = UnixTimeStampField(default=0.0)
 
-
     class Meta:
         db_table = 'mouse_scroll_event'
 
@@ -120,3 +119,10 @@ class ChangeTabEvent(RawEvent):
 
     class Meta:
         db_table = 'change_tab_event'
+
+class HTMLPage(RawEvent):
+    dom = models.TextField()
+    created_at = UnixTimeStampField(default=0.0)
+
+    class Meta:
+        db_table = 'html_page'

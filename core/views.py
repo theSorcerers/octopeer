@@ -2,6 +2,7 @@ from core.models import (
     ChangeTabEvent,
     ElementType,
     EventType,
+    HTMLPage,
     KeystrokeEvent,
     MouseClickEvent,
     MousePositionEvent,
@@ -18,6 +19,7 @@ from core.serializers import (
     ChangeTabEventSerializer,
     ElementTypeSerializer,
     EventTypeSerializer,
+    HTMLPageSerializer,
     KeystrokeEventSerializer,
     MouseClickEventSerializer,
     MousePositionEventSerializer,
@@ -41,6 +43,7 @@ def api_root(request, format=None):
         'change-tab-events': reverse('change-tab-event-list', request=request, format=format),
         'element-types': reverse('element-type-list', request=request, format=format),
         'event-types': reverse('event-type-list', request=request, format=format),
+        'html-pages': reverse('html-page-list', request=request, format=format),
         'keystroke-events': reverse('keystroke-event-list', request=request, format=format),
         'mouse-click-events': reverse('mouse-click-event-list', request=request, format=format),
         'mouse-position-events': reverse('mouse-position-event-list', request=request, format=format),
@@ -200,3 +203,11 @@ class ChangeTabEventList(generics.ListCreateAPIView):
 class ChangeTabEventDetail(generics.RetrieveAPIView):
     queryset = ChangeTabEvent.objects.all()
     serializer_class = ChangeTabEventSerializer
+
+class HTMLPageList(generics.ListCreateAPIView):
+    queryset = HTMLPage.objects.all()
+    serializer_class = HTMLPageSerializer
+
+class HTMLPageDetail(generics.RetrieveAPIView):
+    queryset = HTMLPage.objects.all()
+    serializer_class = HTMLPageSerializer
