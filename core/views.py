@@ -59,6 +59,20 @@ def api_root(request, format=None):
         'window-resolution-events': reverse('window-resolution-event-list', request=request, format=format),
     })
 
+class EventUserFilter(generics.ListAPIView):
+    @property
+    def queryset(self):
+        raise NotImplementedError
+
+    class Meta:
+        abstract = True
+
+    def get_queryset(self):
+        username = self.kwargs['username']
+        user = User.objects.get(username=username)
+        sessions = Session.objects.filter(user=user)
+        return self.queryset.filter(session__in=sessions)
+
 class UserList(generics.ListCreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
@@ -110,6 +124,15 @@ class SessionList(generics.ListCreateAPIView):
     queryset = Session.objects.all()
     serializer_class = SessionSerializer
 
+class SessionUserList(generics.ListAPIView):
+    queryset = Session.objects.all()
+    serializer_class = SessionSerializer
+
+    def get_queryset(self):
+        username = self.kwargs['username']
+        user = User.objects.get(username=username)
+        return self.queryset.objects.filter(user=user)
+
 class SessionDetail(generics.RetrieveAPIView):
     queryset = Session.objects.all()
     serializer_class = SessionSerializer
@@ -155,11 +178,32 @@ class SemanticEventList(generics.ListCreateAPIView):
     queryset = SemanticEvent.objects.all()
     serializer_class = SemanticEventSerializer
 
+class SemanticEventUserList(EventUserFilter):
+    queryset = SemanticEvent.objects.all()
+    serializer_class = SemanticEventSerializer
+
+    def get_queryset(self):
+        username = self.kwargs['username']
+        event_type = self.request.query_params.get('event_type', None)
+        element_type = self.request.query_params.get('element_type', None)
+        user = User.objects.get(username=username)
+        sessions = Session.objects.filter(user=user)
+        semantic_events = self.queryset.filter(session__in=sessions)
+        if event_type is not None:
+            semantic_events = semantic_events.filter(event_type=event_type)
+        if element_type is not None:
+            semantic_events = semantic_events.filter(element_type=element_type)
+        return semantic_events
+
 class SemanticEventDetail(generics.RetrieveAPIView):
     queryset = SemanticEvent.objects.all()
     serializer_class = SemanticEventSerializer
 
 class KeystrokeEventList(generics.ListCreateAPIView):
+    queryset = KeystrokeEvent.objects.all()
+    serializer_class = KeystrokeEventSerializer
+
+class KeystrokeEventUserList(EventUserFilter):
     queryset = KeystrokeEvent.objects.all()
     serializer_class = KeystrokeEventSerializer
 
@@ -179,11 +223,19 @@ class MousePositionEventList(generics.ListCreateAPIView):
     queryset = MousePositionEvent.objects.all()
     serializer_class = MousePositionEventSerializer
 
+class MousePositionEventUserList(EventUserFilter):
+    queryset = MousePositionEvent.objects.all()
+    serializer_class = MousePositionEventSerializer
+
 class MousePositionEventDetail(generics.RetrieveAPIView):
     queryset = MousePositionEvent.objects.all()
     serializer_class = MousePositionEventSerializer
 
 class MouseClickEventList(generics.ListCreateAPIView):
+    queryset = MouseClickEvent.objects.all()
+    serializer_class = MouseClickEventSerializer
+
+class MouseClickEventUserList(EventUserFilter):
     queryset = MouseClickEvent.objects.all()
     serializer_class = MouseClickEventSerializer
 
@@ -195,11 +247,19 @@ class MouseScrollEventList(generics.ListCreateAPIView):
     queryset = MouseScrollEvent.objects.all()
     serializer_class = MouseScrollEventSerializer
 
+class MouseScrollEventUserList(EventUserFilter):
+    queryset = MouseScrollEvent.objects.all()
+    serializer_class = MouseScrollEventSerializer
+
 class MouseScrollEventDetail(generics.RetrieveAPIView):
     queryset = MouseScrollEvent.objects.all()
     serializer_class = MouseScrollEventSerializer
 
 class WindowResolutionEventList(generics.ListCreateAPIView):
+    queryset = WindowResolutionEvent.objects.all()
+    serializer_class = WindowResolutionEventSerializer
+
+class WindowResolutionEventUserList(EventUserFilter):
     queryset = WindowResolutionEvent.objects.all()
     serializer_class = WindowResolutionEventSerializer
 
@@ -211,11 +271,19 @@ class ChangeTabEventList(generics.ListCreateAPIView):
     queryset = ChangeTabEvent.objects.all()
     serializer_class = ChangeTabEventSerializer
 
+class ChangeTabEventUserList(EventUserFilter):
+    queryset = ChangeTabEvent.objects.all()
+    serializer_class = ChangeTabEventSerializer
+
 class ChangeTabEventDetail(generics.RetrieveAPIView):
     queryset = ChangeTabEvent.objects.all()
     serializer_class = ChangeTabEventSerializer
 
 class HTMLPageList(generics.ListCreateAPIView):
+    queryset = HTMLPage.objects.all()
+    serializer_class = HTMLPageSerializer
+
+class HTMLPageUserList(EventUserFilter):
     queryset = HTMLPage.objects.all()
     serializer_class = HTMLPageSerializer
 
