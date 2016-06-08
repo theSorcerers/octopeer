@@ -131,7 +131,7 @@ class SessionUserList(generics.ListAPIView):
     def get_queryset(self):
         username = self.kwargs['username']
         user = User.objects.get(username=username)
-        return self.queryset.objects.filter(user=user)
+        return self.queryset.filter(user=user)
 
 class SessionDetail(generics.RetrieveAPIView):
     queryset = Session.objects.all()
