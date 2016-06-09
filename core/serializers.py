@@ -20,15 +20,9 @@ from rest_framework import serializers
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
-    sessions = serializers.HyperlinkedRelatedField(
-        many=True,
-        read_only=True,
-        view_name='session-pk-detail'
-    )
-
     class Meta:
         model = User
-        fields = ('url', 'id', 'username', 'sessions')
+        fields = ('url', 'id', 'username')
         extra_kwargs = {
             'url': {'lookup_field': 'username'}
         }
@@ -66,15 +60,10 @@ class SessionSerializer(serializers.HyperlinkedModelSerializer):
     url = fields.SessionHyperlinkedIdentityField(view_name='session-detail')
     pull_request = PullRequestSerializer()
     user = UserSerializer()
-    semantic_events = serializers.HyperlinkedRelatedField(
-        many=True,
-        read_only=True,
-        view_name='semantic-event-detail'
-    )
 
     class Meta:
         model = Session
-        fields = ('url', 'id', 'pull_request', 'user', 'semantic_events')
+        fields = ('url', 'id', 'pull_request', 'user')
 
     def create(self, validated_data):
         user = validated_data.pop('user')
