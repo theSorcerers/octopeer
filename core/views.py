@@ -69,7 +69,7 @@ class EventUserFilter(generics.ListAPIView):
 
     def get_queryset(self):
         username = self.kwargs['username']
-        user = User.objects.get(username=username)
+        user = get_object_or_404(User.objects.all(), username=username)
         sessions = Session.objects.filter(user=user)
         return self.queryset.filter(session__in=sessions)
 
@@ -110,7 +110,7 @@ class PullRequestDetail(generics.RetrieveAPIView):
     def get_object(self):
         queryset = self.get_queryset()             # Get the base queryset
         queryset = self.filter_queryset(queryset)  # Apply any filter backends
-        repository = Repository.objects.get(
+        repository = get_object_or_404(Repository.objects.all(),
             owner=self.kwargs['owner'],
             name=self.kwargs['name']
         )
@@ -132,7 +132,7 @@ class SessionUserList(generics.ListAPIView):
         username = self.kwargs['username']
         date_from = self.request.query_params.get('date_from', None)
         date_to = self.request.query_params.get('date_to', None)
-        user = User.objects.get(username=username)
+        user = get_object_or_404(User.objects.all(), username=username)
         sessions = self.queryset.filter(user=user)
         if date_from is not None:
             sessions = sessions.filter(created_at__gte=date_from)
@@ -150,12 +150,17 @@ class SessionDetail(generics.RetrieveAPIView):
         if 'pk' in self.kwargs:
             filter = { 'id': self.kwargs['pk'] }
             return get_object_or_404(queryset, **filter)
-        user = User.objects.get(username=self.kwargs['username'])
-        repository = Repository.objects.get(
+        user = get_object_or_404(
+            User.objects.all(),
+            username=self.kwargs['username']
+        )
+        repository = get_object_or_404(
+            Repository.objects.all(),
             owner=self.kwargs['owner'],
             name=self.kwargs['name']
         )
-        pull_request = PullRequest.objects.get(
+        pull_request = get_object_or_404(
+            PullRequest.objects.all(),
             repository=repository,
             pull_request_number=self.kwargs['pull_request_number']
         )
@@ -195,7 +200,7 @@ class SemanticEventUserList(EventUserFilter):
         element_type = self.request.query_params.get('element_type', None)
         date_from = self.request.query_params.get('date_from', None)
         date_to = self.request.query_params.get('date_to', None)
-        user = User.objects.get(username=username)
+        user = get_object_or_404(User.objects.all(), username=username)
         sessions = Session.objects.filter(user=user)
         semantic_events = self.queryset.filter(session__in=sessions)
         if event_type is not None:
@@ -213,16 +218,19 @@ class SemanticEventSessionList(EventUserFilter):
     serializer_class = SemanticEventSerializer
 
     def get_queryset(self):
-        user = User.objects.get(username=self.kwargs['username'])
-        repository = Repository.objects.get(
+        user = get_object_or_404(User.objects.all(), username=self.kwargs['username'])
+        repository = get_object_or_404(
+            Repository.objects.all(),
             owner=self.kwargs['owner'],
             name=self.kwargs['name']
         )
-        pull_request = PullRequest.objects.get(
+        pull_request = get_object_or_404(
+            PullRequest.objects.all(),
             repository=repository,
             pull_request_number=self.kwargs['pull_request_number']
         )
-        session = Session.objects.get(
+        session = get_object_or_404(
+            Session.objects.all(),
             pull_request=pull_request,
             user=user
         )
