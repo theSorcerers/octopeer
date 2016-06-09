@@ -20,7 +20,7 @@ class Repository(models.Model):
 
 class PullRequest(models.Model):
     id = models.AutoField(primary_key=True, unique=True)
-    repository = models.ForeignKey(Repository, on_delete=models.CASCADE, null=True)
+    repository = models.ForeignKey(Repository, on_delete=models.CASCADE)
     pull_request_number = models.PositiveIntegerField()
 
     class Meta:
