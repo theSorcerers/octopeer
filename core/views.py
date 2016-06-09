@@ -130,8 +130,15 @@ class SessionUserList(generics.ListAPIView):
 
     def get_queryset(self):
         username = self.kwargs['username']
+        date_from = self.request.query_params.get('date_from', None)
+        date_to = self.request.query_params.get('date_to', None)
         user = User.objects.get(username=username)
-        return self.queryset.filter(user=user)
+        sessions = self.queryset.filter(user=user)
+        if date_from is not None:
+            sessions = sessions.filter(created_at__gte=date_from)
+        if date_to is not None:
+            sessions = sessions.filter(created_at__gte=date_to)
+        return sessions
 
 class SessionDetail(generics.RetrieveAPIView):
     queryset = Session.objects.all()
@@ -186,6 +193,8 @@ class SemanticEventUserList(EventUserFilter):
         username = self.kwargs['username']
         event_type = self.request.query_params.get('event_type', None)
         element_type = self.request.query_params.get('element_type', None)
+        date_from = self.request.query_params.get('date_from', None)
+        date_to = self.request.query_params.get('date_to', None)
         user = User.objects.get(username=username)
         sessions = Session.objects.filter(user=user)
         semantic_events = self.queryset.filter(session__in=sessions)
@@ -193,6 +202,31 @@ class SemanticEventUserList(EventUserFilter):
             semantic_events = semantic_events.filter(event_type=event_type)
         if element_type is not None:
             semantic_events = semantic_events.filter(element_type=element_type)
+        if date_from is not None:
+            semantic_events = semantic_events.filter(created_at__gte=date_from)
+        if date_to is not None:
+            semantic_events = semantic_events.filter(created_at__gte=date_to)
+        return semantic_events
+
+class SemanticEventSessionList(EventUserFilter):
+    queryset = SemanticEvent.objects.all()
+    serializer_class = SemanticEventSerializer
+
+    def get_queryset(self):
+        user = User.objects.get(username=self.kwargs['username'])
+        repository = Repository.objects.get(
+            owner=self.kwargs['owner'],
+            name=self.kwargs['name']
+        )
+        pull_request = PullRequest.objects.get(
+            repository=repository,
+            pull_request_number=self.kwargs['pull_request_number']
+        )
+        session = Session.objects.get(
+            pull_request=pull_request,
+            user=user
+        )
+        semantic_events = self.queryset.filter(session=session)
         return semantic_events
 
 class SemanticEventDetail(generics.RetrieveAPIView):

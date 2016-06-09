@@ -1,4 +1,5 @@
 [
+{"model": "core.elementtype", "pk": 0, "fields": {"name": "No element"}},
 {"model": "core.elementtype", "pk": 101, "fields": {"name": "Merge Pull Request"}},
 {"model": "core.elementtype", "pk": 102, "fields": {"name": "Close Pull Request"}},
 {"model": "core.elementtype", "pk": 103, "fields": {"name": "Cancel inline comment"}},

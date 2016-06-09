@@ -46,11 +46,12 @@ urlpatterns = [
 
     url(r'^semantic-events/$', views.SemanticEventList.as_view(), name='semantic-event-list'),
     url(r'^semantic-events/(?P<pk>[0-9]+)/$', views.SemanticEventDetail.as_view(), name='semantic-event-detail'),
+    url(r'^semantic-events/(?P<username>.+)/(?P<owner>.+)/(?P<name>.+)/(?P<pull_request_number>[0-9]+)/$', views.SemanticEventSessionList.as_view(), name='semantic-event-session-list'),
     url(r'^semantic-events/(?P<username>.+)/$', views.SemanticEventUserList.as_view(), name='semantic-event-user-list'),
 
     url(r'^sessions/$', views.SessionList.as_view(), name='session-list'),
     url(r'^sessions/(?P<username>.+)/(?P<owner>.+)/(?P<name>.+)/(?P<pull_request_number>[0-9]+)/$', views.SessionDetail.as_view(), name='session-detail'),
-    url(r'^sessions/(?P<pk>[0-9]+)/$', views.SessionDetail.as_view(), name='session-pk-detail'),\
+    url(r'^sessions/(?P<pk>[0-9]+)/$', views.SessionDetail.as_view(), name='session-pk-detail'),
     url(r'^sessions/(?P<username>.+)/$', views.SessionUserList.as_view(), name='session-user-list'),
 
     url(r'^users/$', views.UserList.as_view(), name='user-list'),
