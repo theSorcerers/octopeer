@@ -245,6 +245,17 @@ class KeystrokeEventList(generics.ListCreateAPIView):
     queryset = KeystrokeEvent.objects.all()
     serializer_class = KeystrokeEventSerializer
 
+    def get_queryset(self):
+        session_id = self.request.query_params.get('session_id', None)
+        keystroke_events = self.queryset
+        if session_id is not None:
+            session = get_object_or_404(
+                Session.objects.all(),
+                id=session_id
+            )
+            sessions = keystroke_events.filter(session=session)
+        return keystroke_events
+
 class KeystrokeEventUserList(EventUserFilter):
     queryset = KeystrokeEvent.objects.all()
     serializer_class = KeystrokeEventSerializer
