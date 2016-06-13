@@ -44,6 +44,7 @@ sudo service gunicorn start
 
 sudo tee -a /etc/nginx/sites-available/octopeer << EOF
 server {
+    client_max_body_size 20M;
     listen 80;
     server_name 10.0.22.6;
 
