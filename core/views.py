@@ -253,7 +253,7 @@ class KeystrokeEventList(generics.ListCreateAPIView):
                 Session.objects.all(),
                 id=session_id
             )
-            sessions = keystroke_events.filter(session=session)
+            keystroke_events = keystroke_events.filter(session=session)
         return keystroke_events
 
 class KeystrokeEventUserList(EventUserFilter):
