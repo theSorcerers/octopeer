@@ -37,6 +37,7 @@ class RepositorySerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Repository
         fields = ('url', 'owner', 'name', 'platform')
+        validators = []
 
     def create(self, validated_data):
         repository, created = Repository.objects.get_or_create(**validated_data)
@@ -49,6 +50,7 @@ class PullRequestSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = PullRequest
         fields = ('url', 'repository', 'pull_request_number')
+        validators = []
 
     def create(self, validated_data):
         repository = validated_data.pop('repository')
@@ -64,6 +66,7 @@ class SessionSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Session
         fields = ('url', 'id', 'pull_request', 'user')
+        validators = []
 
     def create(self, validated_data):
         user = validated_data.pop('user')

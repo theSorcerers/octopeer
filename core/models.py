@@ -17,6 +17,7 @@ class Repository(models.Model):
 
     class Meta:
         db_table = 'repository'
+        unique_together = ('owner', 'name', 'platform')
 
 class PullRequest(models.Model):
     id = models.AutoField(primary_key=True, unique=True)
@@ -25,6 +26,7 @@ class PullRequest(models.Model):
 
     class Meta:
         db_table = 'pull_request'
+        unique_together = ('repository', 'pull_request_number')
 
 class Session(models.Model):
     id = models.AutoField(primary_key=True, unique=True)
@@ -33,6 +35,7 @@ class Session(models.Model):
 
     class Meta:
         db_table = 'session'
+        unique_together = ('pull_request', 'user')
 
 class EventType(models.Model):
     id = models.PositiveIntegerField(primary_key=True, unique=True)
