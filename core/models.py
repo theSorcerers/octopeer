@@ -69,13 +69,15 @@ class SemanticEvent(models.Model):
     class Meta:
         db_table = 'semantic_event'
 
-class EventPosition(models.Model):
+class FilePosition(models.Model):
     id = models.AutoField(primary_key=True, unique=True)
-    event = models.ForeignKey(SemanticEvent, on_delete=models.CASCADE)
-    filename = models.FileField(max_length=100)
+    semantic_event = models.OneToOneField(SemanticEvent)
+    commit_hash = models.CharField(max_length=255)
+    filename = models.CharField(max_length=255)
+    line_number = models.PositiveIntegerField()
 
     class Meta:
-        db_table = 'event_position'
+        db_table = 'file_position'
 
 class KeystrokeType(models.Model):
     id = models.PositiveIntegerField(primary_key=True, unique=True)

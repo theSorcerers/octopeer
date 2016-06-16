@@ -15,6 +15,9 @@ urlpatterns = [
     url(r'^event-types/$', views.EventTypeList.as_view(), name='event-type-list'),
     url(r'^event-types/(?P<pk>[0-9]+)/$', views.EventTypeDetail.as_view(), name='event-type-detail'),
 
+    url(r'^file-positions/$', views.FilePositionList.as_view(), name='file-position-list'),
+    url(r'^file-positions/(?P<pk>[0-9]+)/$', views.FilePositionDetail.as_view(), name='file-position-detail'),
+
     url(r'^html-pages/$', views.HTMLPageList.as_view(), name='html-page-list'),
     url(r'^html-pages/(?P<pk>[0-9]+)/$', views.HTMLPageDetail.as_view(), name='html-page-detail'),
     url(r'^html-pages/(?P<username>.+)/$', views.HTMLPageUserList.as_view(), name='html-page-user-list'),

@@ -2,6 +2,7 @@ from core.models import (
     ChangeTabEvent,
     ElementType,
     EventType,
+    FilePosition,
     HTMLPage,
     KeystrokeEvent,
     KeystrokeType,
@@ -20,6 +21,7 @@ from core.serializers import (
     ChangeTabEventSerializer,
     ElementTypeSerializer,
     EventTypeSerializer,
+    FilePositionSerializer,
     HTMLPageSerializer,
     KeystrokeEventSerializer,
     KeystrokeTypeSerializer,
@@ -45,6 +47,7 @@ def api_root(request, format=None):
         'change-tab-events': reverse('change-tab-event-list', request=request, format=format),
         'element-types': reverse('element-type-list', request=request, format=format),
         'event-types': reverse('event-type-list', request=request, format=format),
+        'file-positions': reverse('file-position-list', request=request, format=format),
         'html-pages': reverse('html-page-list', request=request, format=format),
         'keystroke-events': reverse('keystroke-event-list', request=request, format=format),
         'keystroke-types': reverse('keystroke-type-list', request=request, format=format),
@@ -240,6 +243,27 @@ class SemanticEventSessionList(EventUserFilter):
 class SemanticEventDetail(generics.RetrieveAPIView):
     queryset = SemanticEvent.objects.all()
     serializer_class = SemanticEventSerializer
+
+class FilePositionList(generics.ListCreateAPIView):
+    queryset = FilePosition.objects.all()
+    serializer_class = FilePositionSerializer
+
+    def get_queryset(self):
+        commit_hash = self.request.query_params.get('commit_hash', None)
+        filename = self.request.query_params.get('filename', None)
+        semantic_event_id = self.request.query_params.get('semantic_event_id', None)
+        file_positions = self.queryset
+        if commit_hash is not None:
+            file_positions = file_positions.filter(commit_hash=commit_hash)
+        if filename is not None:
+            file_positions = file_positions.filter(filename=filename)
+        if semantic_event_id is not None:
+            file_positions = file_positions.filter(semantic_event=semantic_event_id)
+        return file_positions
+
+class FilePositionDetail(generics.RetrieveAPIView):
+    queryset = FilePosition.objects.all()
+    serializer_class = FilePositionSerializer
 
 class KeystrokeEventList(generics.ListCreateAPIView):
     queryset = KeystrokeEvent.objects.all()

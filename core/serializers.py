@@ -2,6 +2,7 @@ from core.models import (
     ChangeTabEvent,
     ElementType,
     EventType,
+    FilePosition,
     HTMLPage,
     KeystrokeEvent,
     KeystrokeType,
@@ -118,6 +119,14 @@ class SemanticEventSerializer(EventSerializer):
     class Meta:
         model = SemanticEvent
         fields = ('url', 'id', 'session', 'event_type', 'element_type', 'created_at')
+
+class FilePositionSerializer(serializers.HyperlinkedModelSerializer):
+    url = serializers.HyperlinkedIdentityField(view_name='file-position-detail')
+    semantic_event = serializers.PrimaryKeyRelatedField(queryset=SemanticEvent.objects.all())
+
+    class Meta:
+        model = FilePosition
+        fields = ('url', 'id', 'semantic_event', 'commit_hash', 'filename', 'line_number')
 
 class KeystrokeTypeSerializer(serializers.HyperlinkedModelSerializer):
     url = serializers.HyperlinkedIdentityField(view_name='keystroke-type-detail')
