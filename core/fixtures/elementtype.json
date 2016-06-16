@@ -30,5 +30,7 @@
 {"model": "core.elementtype", "pk": 405, "fields": {"name": "Lock conversation (maybe unlock)"}},
 {"model": "core.elementtype", "pk": 501, "fields": {"name": "Comment textfield"}},
 {"model": "core.elementtype", "pk": 502, "fields": {"name": "Inline comment textfield"}},
+{"model": "core.elementtype", "pk": 601, "fields": {"name": "Diff line number"}},
+{"model": "core.elementtype", "pk": 602, "fields": {"name": "Diff line of code"}}, 
 {"model": "core.elementtype", "pk": 901, "fields": {"name": "Date"}}
 ]
