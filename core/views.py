@@ -140,7 +140,7 @@ class SessionUserList(generics.ListAPIView):
         if date_from is not None:
             sessions = sessions.filter(created_at__gte=date_from)
         if date_to is not None:
-            sessions = sessions.filter(created_at__gte=date_to)
+            sessions = sessions.filter(created_at__lte=date_to)
         return sessions
 
 class SessionDetail(generics.RetrieveAPIView):
@@ -213,7 +213,7 @@ class SemanticEventUserList(EventUserFilter):
         if date_from is not None:
             semantic_events = semantic_events.filter(created_at__gte=date_from)
         if date_to is not None:
-            semantic_events = semantic_events.filter(created_at__gte=date_to)
+            semantic_events = semantic_events.filter(created_at__lte=date_to)
         return semantic_events
 
 class SemanticEventSessionList(EventUserFilter):
