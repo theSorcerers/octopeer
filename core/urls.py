@@ -24,7 +24,7 @@ urlpatterns = [
 
     url(r'^keystroke-events/$', views.KeystrokeEventList.as_view(), name='keystroke-event-list'),
     url(r'^keystroke-events/(?P<pk>[0-9]+)/$', views.KeystrokeEventDetail.as_view(), name='keystroke-event-detail'),
-    url(r'^keystroke-events/(?P<username>.+)/$', views.ChangeTabEventUserList.as_view(), name='keystroke-user-list'),
+    url(r'^keystroke-events/(?P<username>.+)/$', views.KeystrokeEventUserList.as_view(), name='keystroke-user-list'),
 
     url(r'^keystroke-types/$', views.KeystrokeTypeList.as_view(), name='keystroke-type-list'),
     url(r'^keystroke-types/(?P<pk>[0-9]+)/$', views.KeystrokeTypeDetail.as_view(), name='keystroke-type-detail'),
