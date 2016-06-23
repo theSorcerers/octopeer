@@ -74,7 +74,7 @@ class FilePosition(models.Model):
     semantic_event = models.OneToOneField(SemanticEvent)
     commit_hash = models.CharField(max_length=255)
     filename = models.CharField(max_length=255)
-    line_number = models.PositiveIntegerField()
+    line_number = models.PositiveIntegerField(blank=True, null=True)
 
     class Meta:
         db_table = 'file_position'
