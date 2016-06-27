@@ -4,7 +4,7 @@ from unixtimestampfield.fields import UnixTimeStampField
 
 class User(models.Model):
     id = models.AutoField(primary_key=True, unique=True)
-    username = models.CharField(max_length=255)
+    username = models.CharField(max_length=255, unique=True)
 
     class Meta:
         db_table = 'user'
