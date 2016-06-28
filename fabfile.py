@@ -1,11 +1,11 @@
 from fabric.api import *
 
 
-env.hosts = ['octopeer@146.185.128.124']
+env.hosts = ['aaronang@octopeer.st.ewi.tudelft.nl']
 
 def deploy():
-    with prefix('source /home/octopeer/env/bin/activate'):
-        with cd('/home/octopeer/octopeer'):
+    with prefix('source ~/env/bin/activate'):
+        with cd('~/octopeer'):
             run('git stash')
             run('git pull --rebase')
             run('git stash pop')

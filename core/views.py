@@ -83,7 +83,14 @@ class UserList(generics.ListCreateAPIView):
 class UserDetail(generics.RetrieveAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    lookup_field = 'username'
+
+    def get_object(self):
+        queryset = self.get_queryset()             # Get the base queryset
+        queryset = self.filter_queryset(queryset)  # Apply any filter backends
+        filter = {
+            'username': self.kwargs['username']
+        }
+        return get_object_or_404(queryset, **filter)  # Lookup the object
 
 class RepositoryList(generics.ListCreateAPIView):
     queryset = Repository.objects.all()

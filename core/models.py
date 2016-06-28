@@ -4,10 +4,11 @@ from unixtimestampfield.fields import UnixTimeStampField
 
 class User(models.Model):
     id = models.AutoField(primary_key=True, unique=True)
-    username = models.CharField(max_length=255, unique=True)
+    username = models.CharField(max_length=255)
 
     class Meta:
         db_table = 'user'
+        unique_together = ('username',)
 
 class Repository(models.Model):
     id = models.AutoField(primary_key=True, unique=True)

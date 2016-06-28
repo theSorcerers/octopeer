@@ -9,6 +9,11 @@ class MultiKeyHyperlinkedIdentityField(serializers.HyperlinkedIdentityField):
         kwargs = dict((url_kw, getattr(obj, prop)) for url_kw, prop in self.identity_args.items())
         return self.reverse(view_name, kwargs=kwargs, request=request, format=format)
 
+class UserHyperLinkedIdentityField(MultiKeyHyperlinkedIdentityField):
+    identity_args = {
+        'username': 'username',
+    }
+
 class RepositoryHyperlinkedIdentityField(MultiKeyHyperlinkedIdentityField):
     identity_args = {
         'owner': 'owner',

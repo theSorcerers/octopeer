@@ -21,12 +21,12 @@ from rest_framework import serializers
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
+    url = fields.UserHyperLinkedIdentityField(view_name='user-detail')
+
     class Meta:
         model = User
         fields = ('url', 'id', 'username')
-        extra_kwargs = {
-            'url': {'lookup_field': 'username'}
-        }
+        validators = []
 
     def create(self, validated_data):
         user, created = User.objects.get_or_create(**validated_data)
