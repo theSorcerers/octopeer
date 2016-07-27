@@ -7,7 +7,9 @@ Vagrant.configure(2) do |config|
   config.vm.provider "virtualbox" do |v|
     v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
     v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
+    v.memory = 2048
+    v.cpus = 2
   end
   config.vm.synced_folder ".", "/home/vagrant/octopeer"
-  config.vm.provision "shell", path: "bootstrap.sh", privileged: false
+  config.vm.provision "shell", path: "provision/bootstrap.sh", privileged: false
 end
