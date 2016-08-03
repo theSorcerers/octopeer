@@ -59,3 +59,4 @@ sudo -u postgres psql -c "CREATE USER vagrant WITH CREATEDB;"
 cd ~/octopeer
 bundle
 rails db:create
+rails db:migrate
