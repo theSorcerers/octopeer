@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe RepositoriesController, type: :controller do
+RSpec.describe Api::RepositoriesController, type: :controller do
 
   describe "GET #index" do
     it "returns http success" do

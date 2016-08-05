@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe PullRequestsController, type: :controller do
+RSpec.describe Api::UsersController, type: :controller do
 
   describe "GET #index" do
     it "returns http success" do

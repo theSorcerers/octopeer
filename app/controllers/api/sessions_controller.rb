@@ -1,4 +1,4 @@
-class SessionsController < ApplicationController
+class Api::SessionsController < ApplicationController
   before_action :set_session, only: :show
 
   def index

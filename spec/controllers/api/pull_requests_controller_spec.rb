@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe SessionsController, type: :controller do
+RSpec.describe Api::PullRequestsController, type: :controller do
 
   describe "GET #index" do
     it "returns http success" do

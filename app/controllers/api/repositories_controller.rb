@@ -1,4 +1,4 @@
-class RepositoriesController < ApplicationController
+class Api::RepositoriesController < ApplicationController
   def index
     render json: Repository.all
   end
