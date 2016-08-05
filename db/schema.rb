@@ -10,10 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160803204923) do
+ActiveRecord::Schema.define(version: 20160805010658) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "repositories", force: :cascade do |t|
+    t.string   "owner"
+    t.string   "name"
+    t.string   "platform"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["owner", "name", "platform"], name: "index_repositories_on_owner_and_name_and_platform", unique: true, using: :btree
+  end
 
   create_table "users", force: :cascade do |t|
     t.string   "username"
