@@ -1,3 +1,4 @@
 class Repository < ApplicationRecord
-  validates :owner, uniqueness: {scope: [:name, :platform]}
+  has_many :pull_requests
+  validates :owner, uniqueness: { scope: [:name, :platform] }
 end

@@ -10,10 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160805010658) do
+ActiveRecord::Schema.define(version: 20160805012941) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "pull_requests", force: :cascade do |t|
+    t.integer  "repository_id"
+    t.integer  "pull_request_number"
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
+    t.index ["repository_id", "pull_request_number"], name: "index_pull_requests_on_repository_id_and_pull_request_number", unique: true, using: :btree
+    t.index ["repository_id"], name: "index_pull_requests_on_repository_id", using: :btree
+  end
 
   create_table "repositories", force: :cascade do |t|
     t.string   "owner"
@@ -31,4 +40,5 @@ ActiveRecord::Schema.define(version: 20160805010658) do
     t.index ["username"], name: "index_users_on_username", unique: true, using: :btree
   end
 
+  add_foreign_key "pull_requests", "repositories"
 end
