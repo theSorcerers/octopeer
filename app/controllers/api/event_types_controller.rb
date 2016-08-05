@@ -15,7 +15,7 @@ class Api::EventTypesController < ApplicationController
     @event_type = EventType.new(event_type_params)
 
     if @event_type.save
-      render json: @event_type, status: :created, location: @event_type
+      render json: @event_type, status: :created
     else
       render json: @event_type.errors, status: :unprocessable_entity
     end

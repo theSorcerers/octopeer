@@ -15,7 +15,7 @@ class Api::ElementTypesController < ApplicationController
     @element_type = ElementType.new(element_type_params)
 
     if @element_type.save
-      render json: @element_type, status: :created, location: @element_type
+      render json: @element_type, status: :created
     else
       render json: @element_type.errors, status: :unprocessable_entity
     end

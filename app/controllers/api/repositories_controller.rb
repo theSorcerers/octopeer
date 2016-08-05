@@ -1,22 +1,31 @@
 class Api::RepositoriesController < ApplicationController
+  before_action :set_repository, only: :show
+
   def index
-    render json: Repository.all
+    @repositories = Repository.all
+
+    render json: @repositories
   end
 
   def show
-    render json: Repository.find(params[:id])
+    render json: @repository
   end
 
   def create
-    repository = Repository.new(repository_params)
-    if repository.save
-      render json: repository
+    @repository = Repository.new(repository_params)
+
+    if @repository.save
+      render json: @repository, status: :created
     else
-      render json: { errors: repository.errors }
+      render json: @repository.errors, status: :unprocessable_entity
     end
   end
 
   private
+
+  def set_repository
+    @repository = Repository.find(params[:id])
+  end
 
   def repository_params
     params.require(:repository).permit(:owner, :name, :platform)
