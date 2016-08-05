@@ -1,4 +1,4 @@
-class Api::V1::PullRequestsController < ApplicationController
+class PullRequestsController < ApplicationController
   def index
     render json: PullRequest.all
   end
