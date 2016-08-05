@@ -1,4 +1,4 @@
 class PullRequestSerializer < ActiveModel::Serializer
   attributes :id, :pull_request_number
-  belongs_to :repository
+  has_one :repository
 end
