@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160805155643) do
+ActiveRecord::Schema.define(version: 20160807205844) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -45,6 +45,17 @@ ActiveRecord::Schema.define(version: 20160805155643) do
     t.index ["owner", "name", "platform"], name: "index_repositories_on_owner_and_name_and_platform", unique: true, using: :btree
   end
 
+  create_table "semantic_events", force: :cascade do |t|
+    t.integer  "session_id"
+    t.integer  "event_type_id"
+    t.integer  "element_type_id"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+    t.index ["element_type_id"], name: "index_semantic_events_on_element_type_id", using: :btree
+    t.index ["event_type_id"], name: "index_semantic_events_on_event_type_id", using: :btree
+    t.index ["session_id"], name: "index_semantic_events_on_session_id", using: :btree
+  end
+
   create_table "sessions", force: :cascade do |t|
     t.integer  "pull_request_id"
     t.integer  "user_id"
@@ -63,6 +74,9 @@ ActiveRecord::Schema.define(version: 20160805155643) do
   end
 
   add_foreign_key "pull_requests", "repositories"
+  add_foreign_key "semantic_events", "element_types"
+  add_foreign_key "semantic_events", "event_types"
+  add_foreign_key "semantic_events", "sessions"
   add_foreign_key "sessions", "pull_requests"
   add_foreign_key "sessions", "users"
 end

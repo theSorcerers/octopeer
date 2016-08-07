@@ -6,5 +6,6 @@ Rails.application.routes.draw do
     resources :pull_requests, only: [:index, :show, :create]
     resources :event_types, only: [:index, :show, :create]
     resources :element_types, only: [:index, :show, :create]
+    resources :semantic_events, only: [:index, :show, :create]
   end
 end
