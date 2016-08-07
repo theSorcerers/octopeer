@@ -17,12 +17,12 @@ RSpec.describe Api::UsersController, type: :controller do
 
       get :show, params: { id: user.id }
 
-      expect(json[:id]).to eq(user[:id])
-      expect(json[:username]).to eq(user[:username])
+      expect(json[:id]).to eq(user.id)
+      expect(json[:username]).to eq(user.username)
     end
   end
 
-  describe 'GET #create' do
+  describe 'POST #create' do
     it 'creates a user' do
       post :create,
            params: { user: { username: 'aaronang' } }
