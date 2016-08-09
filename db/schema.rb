@@ -10,10 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160809125941) do
+ActiveRecord::Schema.define(version: 20160809130653) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "change_tab_events", force: :cascade do |t|
+    t.integer  "session_id"
+    t.string   "url"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["session_id"], name: "index_change_tab_events_on_session_id", using: :btree
+  end
 
   create_table "element_types", force: :cascade do |t|
     t.string   "name"
@@ -135,6 +143,7 @@ ActiveRecord::Schema.define(version: 20160809125941) do
     t.index ["session_id"], name: "index_window_resolution_events_on_session_id", using: :btree
   end
 
+  add_foreign_key "change_tab_events", "sessions"
   add_foreign_key "file_positions", "semantic_events"
   add_foreign_key "keystroke_events", "keystroke_types"
   add_foreign_key "keystroke_events", "sessions"
