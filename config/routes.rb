@@ -13,5 +13,6 @@ Rails.application.routes.draw do
     resources :semantic_events, only: [:index, :show, :create]
     resources :sessions, only: [:index, :show, :create]
     resources :users, only: [:index, :show, :create]
+    resources :window_resolution_events, only: [:index, :show, :create]
   end
 end
