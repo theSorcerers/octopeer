@@ -4,6 +4,7 @@ Rails.application.routes.draw do
     resources :element_types, only: [:index, :show, :create]
     resources :event_types, only: [:index, :show, :create]
     resources :file_positions, only: [:index, :show, :create]
+    resources :html_pages, only: [:index, :show, :create]
     resources :keystroke_events, only: [:index, :show, :create]
     resources :keystroke_types, only: [:index, :show, :create]
     resources :mouse_click_events, only: [:index, :show, :create]

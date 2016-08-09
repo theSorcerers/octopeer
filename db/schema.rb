@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160809130653) do
+ActiveRecord::Schema.define(version: 20160809131320) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -43,6 +43,14 @@ ActiveRecord::Schema.define(version: 20160809130653) do
     t.datetime "created_at",        null: false
     t.datetime "updated_at",        null: false
     t.index ["semantic_event_id"], name: "index_file_positions_on_semantic_event_id", using: :btree
+  end
+
+  create_table "html_pages", force: :cascade do |t|
+    t.integer  "session_id"
+    t.text     "dom"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["session_id"], name: "index_html_pages_on_session_id", using: :btree
   end
 
   create_table "keystroke_events", force: :cascade do |t|
@@ -145,6 +153,7 @@ ActiveRecord::Schema.define(version: 20160809130653) do
 
   add_foreign_key "change_tab_events", "sessions"
   add_foreign_key "file_positions", "semantic_events"
+  add_foreign_key "html_pages", "sessions"
   add_foreign_key "keystroke_events", "keystroke_types"
   add_foreign_key "keystroke_events", "sessions"
   add_foreign_key "mouse_click_events", "sessions"
