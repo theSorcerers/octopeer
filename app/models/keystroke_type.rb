@@ -1,0 +1,2 @@
+class KeystrokeType < ApplicationRecord
+end

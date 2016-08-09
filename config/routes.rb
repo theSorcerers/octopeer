@@ -3,6 +3,7 @@ Rails.application.routes.draw do
     resources :element_types, only: [:index, :show, :create]
     resources :event_types, only: [:index, :show, :create]
     resources :file_positions, only: [:index, :show, :create]
+    resources :keystroke_types, only: [:index, :show, :create]
     resources :pull_requests, only: [:index, :show, :create]
     resources :repositories, only: [:index, :show, :create]
     resources :semantic_events, only: [:index, :show, :create]
