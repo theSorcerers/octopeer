@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160809102629) do
+ActiveRecord::Schema.define(version: 20160809115256) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -35,6 +35,16 @@ ActiveRecord::Schema.define(version: 20160809102629) do
     t.datetime "created_at",        null: false
     t.datetime "updated_at",        null: false
     t.index ["semantic_event_id"], name: "index_file_positions_on_semantic_event_id", using: :btree
+  end
+
+  create_table "keystroke_events", force: :cascade do |t|
+    t.integer  "session_id"
+    t.string   "keystroke"
+    t.integer  "keystroke_type_id"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+    t.index ["keystroke_type_id"], name: "index_keystroke_events_on_keystroke_type_id", using: :btree
+    t.index ["session_id"], name: "index_keystroke_events_on_session_id", using: :btree
   end
 
   create_table "keystroke_types", force: :cascade do |t|
@@ -90,6 +100,8 @@ ActiveRecord::Schema.define(version: 20160809102629) do
   end
 
   add_foreign_key "file_positions", "semantic_events"
+  add_foreign_key "keystroke_events", "keystroke_types"
+  add_foreign_key "keystroke_events", "sessions"
   add_foreign_key "pull_requests", "repositories"
   add_foreign_key "semantic_events", "element_types"
   add_foreign_key "semantic_events", "event_types"
