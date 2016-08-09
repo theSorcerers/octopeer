@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160807205844) do
+ActiveRecord::Schema.define(version: 20160809100200) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,6 +25,16 @@ ActiveRecord::Schema.define(version: 20160807205844) do
     t.string   "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "file_positions", force: :cascade do |t|
+    t.integer  "semantic_event_id"
+    t.string   "commit_hash"
+    t.string   "filename"
+    t.integer  "line_number"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+    t.index ["semantic_event_id"], name: "index_file_positions_on_semantic_event_id", using: :btree
   end
 
   create_table "pull_requests", force: :cascade do |t|
@@ -73,6 +83,7 @@ ActiveRecord::Schema.define(version: 20160807205844) do
     t.index ["username"], name: "index_users_on_username", unique: true, using: :btree
   end
 
+  add_foreign_key "file_positions", "semantic_events"
   add_foreign_key "pull_requests", "repositories"
   add_foreign_key "semantic_events", "element_types"
   add_foreign_key "semantic_events", "event_types"
