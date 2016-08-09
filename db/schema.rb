@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160809124038) do
+ActiveRecord::Schema.define(version: 20160809124832) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -71,6 +71,15 @@ ActiveRecord::Schema.define(version: 20160809124038) do
     t.index ["session_id"], name: "index_mouse_position_events_on_session_id", using: :btree
   end
 
+  create_table "mouse_scroll_events", force: :cascade do |t|
+    t.integer  "session_id"
+    t.integer  "viewport_x"
+    t.integer  "viewport_y"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["session_id"], name: "index_mouse_scroll_events_on_session_id", using: :btree
+  end
+
   create_table "pull_requests", force: :cascade do |t|
     t.integer  "repository_id"
     t.integer  "pull_request_number"
@@ -122,6 +131,7 @@ ActiveRecord::Schema.define(version: 20160809124038) do
   add_foreign_key "keystroke_events", "sessions"
   add_foreign_key "mouse_click_events", "sessions"
   add_foreign_key "mouse_position_events", "sessions"
+  add_foreign_key "mouse_scroll_events", "sessions"
   add_foreign_key "pull_requests", "repositories"
   add_foreign_key "semantic_events", "element_types"
   add_foreign_key "semantic_events", "event_types"
