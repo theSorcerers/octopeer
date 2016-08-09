@@ -1,6 +1,9 @@
 class Api::SemanticEventsController < ApplicationController
+  include TimeHelper
   before_action :set_semantic_event, only: :show
-  before_action :format_time, only: :create
+  before_action only: :create do
+    format_time(:semantic_event)
+  end
 
   def index
     @semantic_events = SemanticEvent.all
@@ -30,13 +33,5 @@ class Api::SemanticEventsController < ApplicationController
 
   def semantic_event_params
     params.require(:semantic_event).permit(:id, :session_id, :event_type_id, :element_type_id, :created_at)
-  end
-
-  def format_time
-    begin
-      params[:semantic_event][:created_at] = Time.parse(params[:semantic_event][:created_at]).utc.to_f
-    rescue
-      params[:semantic_event][:created_at] = Time.at(params[:semantic_event][:created_at].to_f).utc
-    end
   end
 end

@@ -12,7 +12,7 @@ RSpec.describe Api::SemanticEventsController, type: :controller do
   end
 
   describe "GET #show" do
-    it "returns http success" do
+    it "shows detail for one semantic event" do
       semantic_event = create :semantic_event
 
       get :show, params: { id: semantic_event.id }
