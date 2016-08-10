@@ -1,4 +1,4 @@
-module TimeHelper
+module Epochable
   extend ActiveSupport::Concern
 
   included do

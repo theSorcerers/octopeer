@@ -1,5 +1,5 @@
 class Api::MouseClickEventsController < ApplicationController
-  include TimeHelper
+  include Epochable
   include Showable
   include Indexable
   include Createable

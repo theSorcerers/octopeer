@@ -1,5 +1,5 @@
 class Api::HtmlPagesController < ApplicationController
-  include TimeHelper
+  include Epochable
   include Showable
   include Indexable
   include Createable
