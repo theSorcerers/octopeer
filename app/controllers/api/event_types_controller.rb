@@ -6,6 +6,6 @@ class Api::EventTypesController < ApplicationController
   private
 
   def event_type_params
-    params.require(:event_type).permit(:id, :name)
+    params.require(:event_type).permit(:name)
   end
 end

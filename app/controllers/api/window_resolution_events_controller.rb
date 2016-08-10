@@ -7,6 +7,6 @@ class Api::WindowResolutionEventsController < ApplicationController
   private
 
   def window_resolution_event_params
-    params.require(:window_resolution_event).permit(:id, :width, :height, :session_id, :created_at)
+    params.require(:window_resolution_event).permit(:width, :height, :session_id, :created_at)
   end
 end

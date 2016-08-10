@@ -7,6 +7,6 @@ class Api::MouseScrollEventsController < ApplicationController
   private
 
   def mouse_scroll_event_params
-    params.require(:mouse_scroll_event).permit(:id, :viewport_x, :viewport_y, :session_id, :created_at)
+    params.require(:mouse_scroll_event).permit(:viewport_x, :viewport_y, :session_id, :created_at)
   end
 end
