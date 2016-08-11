@@ -2,6 +2,12 @@
 
 ## Getting Started
 
+### Local Setup
+
+To set up the Octopeer server locally, please have a close look at `provision/bootstrap.sh`.
+
+### Vagrant Setup
+
 1. The fastest way to set up the development environment is to install:
 
    * [VirtualBox](https://www.virtualbox.org/)

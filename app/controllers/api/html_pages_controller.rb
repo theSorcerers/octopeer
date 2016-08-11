@@ -6,7 +6,7 @@ class Api::HtmlPagesController < ApplicationController
 
   private
 
-  def html_page_params
+  def parameters
     params.require(:html_page).permit(:dom, :session_id, :created_at)
   end
 end

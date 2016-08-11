@@ -6,7 +6,7 @@ class Api::ChangeTabEventsController < ApplicationController
 
   private
 
-  def change_tab_event_params
+  def parameters
     params.require(:change_tab_event).permit(:session_id, :url, :created_at)
   end
 end

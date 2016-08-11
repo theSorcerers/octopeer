@@ -5,7 +5,7 @@ class Api::SessionsController < ApplicationController
 
   private
 
-  def session_params
+  def parameters
     params.require(:session).permit(:pull_request_id, :user_id)
   end
 end

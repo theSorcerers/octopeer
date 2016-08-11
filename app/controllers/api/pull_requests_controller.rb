@@ -5,7 +5,7 @@ class Api::PullRequestsController < ApplicationController
 
   private
 
-  def pull_request_params
+  def parameters
     params.require(:pull_request).permit(:repository_id, :pull_request_number)
   end
 end

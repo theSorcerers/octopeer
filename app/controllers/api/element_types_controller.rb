@@ -5,7 +5,7 @@ class Api::ElementTypesController < ApplicationController
 
   private
 
-  def element_type_params
+  def parameters
     params.require(:element_type).permit(:name)
   end
 end

@@ -5,7 +5,7 @@ class Api::FilePositionsController < ApplicationController
 
   private
 
-  def file_position_params
+  def parameters
     params.require(:file_position).permit(:semantic_event_id, :commit_hash, :filename, :line_number)
   end
 end

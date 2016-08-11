@@ -6,7 +6,7 @@ class Api::MouseClickEventsController < ApplicationController
 
   private
 
-  def mouse_click_event_params
+  def parameters
     params.require(:mouse_click_event).permit(:session_id, :created_at)
   end
 end

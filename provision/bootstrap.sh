@@ -28,7 +28,6 @@ export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"
 
 rbenv install 2.3.1
 rbenv global 2.3.1
-ruby -v
 
 ################################################################################
 # Bundler Installation

@@ -5,7 +5,7 @@ class Api::RepositoriesController < ApplicationController
 
   private
 
-  def repository_params
+  def parameters
     params.require(:repository).permit(:owner, :name, :platform)
   end
 end

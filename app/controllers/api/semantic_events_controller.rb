@@ -6,7 +6,7 @@ class Api::SemanticEventsController < ApplicationController
 
   private
 
-  def semantic_event_params
+  def parameters
     params.require(:semantic_event).permit(:session_id, :event_type_id, :element_type_id, :created_at)
   end
 end

@@ -5,7 +5,7 @@ class Api::KeystrokeTypesController < ApplicationController
 
   private
 
-  def keystroke_type_params
+  def parameters
     params.require(:keystroke_type).permit(:name)
   end
 end
