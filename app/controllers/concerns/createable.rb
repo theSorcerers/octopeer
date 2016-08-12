@@ -15,9 +15,9 @@ module Createable
   extend ActiveSupport::Concern
 
   def create
-    @resource = controller_name.classify.constantize.new(parameters)
+    @resource = controller_name.classify.constantize.find_or_create_by(parameters)
 
-    if @resource.save
+    if @resource
       render json: @resource, status: :created
     else
       render json: @resource.errors, status: :unprocessable_entity
